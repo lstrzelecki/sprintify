@@ -60,3 +60,19 @@ export const removeIf = _.reject;
 export const append = _.concat;
 export const negate = _.negate(_.identity);
 export const matches = _.isMatchWith(customizer);
+
+export function moveIf<X>(matchFn: Predicate<X>) {
+
+  let removed: X[] = [];
+
+  const from = (array: X[]) => {
+    removed = _.filter(matchFn, array);
+    return _.reject(matchFn, array);
+  };
+
+  const to = (array: X[]) => {
+    return _.concat(removed, array);
+  };
+
+  return { from, to };
+}
