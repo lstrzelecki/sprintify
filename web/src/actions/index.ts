@@ -11,9 +11,21 @@ export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
 
+export function addToSprint(num: number) {
+  return { num, ...type('ADD_TO_SPRINT') };
+}
+
+export function removeFromSprint(num: number) {
+  return { num, ...type('REMOVE_FROM_SPRINT') };
+}
+
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof EditStoryRet;
+const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
+const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
 
 export type Action =
   | AddNewStoryAction
-  | EditStoryAction;
+  | EditStoryAction
+  | AddToSprintAction
+  | RemoveFromSprintAction;
