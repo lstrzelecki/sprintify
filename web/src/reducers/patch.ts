@@ -46,7 +46,7 @@ export interface Patch<S> extends Function {
 }
 
 type Diff<S> = {
-  [F in keyof S]?: S[F] | Transform<S[F]>;
+  [F in keyof S]?: S[F] | Transform<S[F]> | Diff<S[F]>;
 };
 
 export function patch<S, T extends S>(changes: Diff<T>): Patch<S> { return _.mergeWith(customizer, _, changes); }
@@ -61,17 +61,18 @@ export const append = _.concat;
 export const negate = _.negate(_.identity);
 export const matches = _.isMatchWith(customizer);
 
-export function moveIf<X>(matchFn: Predicate<X>) {
+export function moveIf<X>(matchFn: Predicate<X>): {from: Transform<X[]>, to: Transform<X[]>} {
 
-  let removed: X[] = [];
+  const moved: X[] = [];
 
-  const from = (array: X[]) => {
-    removed = _.filter(matchFn, array);
-    return _.reject(matchFn, array);
+  const from = (source: X[]) => {
+    source.filter(matchFn).forEach(i => moved.push(i));
+    return _.reject(matchFn, source);
   };
 
-  const to = (array: X[]) => {
-    return _.concat(removed, array);
+  const to = (target: X[]) => {
+    target.forEach(x => moved.push(x));
+    return moved;
   };
 
   return { from, to };

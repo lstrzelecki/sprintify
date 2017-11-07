@@ -1,5 +1,5 @@
 // tslint:disable-next-line:no-any
-// declare const window: {__REDUX_DEVTOOLS_EXTENSION__: () => any};
+declare const window: { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: (args: any) => any};
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -10,17 +10,18 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'typeface-open-sans';
 
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 
 import App from './containers/App';
 import app from './reducers';
 import epics from './actions/epics';
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const epicMiddleware = createEpicMiddleware(epics);
 
 const store = createStore(
   app,
-  applyMiddleware(/*window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), */ epicMiddleware)
+  composeEnhancers(applyMiddleware(epicMiddleware))
 );
 
 ReactDOM.render(

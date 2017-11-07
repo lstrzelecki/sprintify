@@ -635,6 +635,8 @@ declare namespace fp {
     reject<T>(fn: (value: T) => boolean, list: T[]): T[];
     reject(predicate: string): (collection: string) => string[];
     reject<W extends {}, T>(predicate: W): (collection: List<T>) => T[];
+
+    findIndex<T>(fn: (value: T) => boolean, list: T[]): number;
   }
 }
 

@@ -11,6 +11,14 @@ export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
 
+export function moveBefore(num: number, relative: number) {
+  return { num, relative, ...type('MOVE_STORY_BEFORE') };
+}
+
+export function moveAfter(num: number, relative: number) {
+  return { num, relative, ...type('MOVE_STORY_AFTER') };
+}
+
 export function addToSprint(num: number) {
   return { num, ...type('ADD_TO_SPRINT') };
 }
@@ -24,8 +32,13 @@ const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof E
 const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
 const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
 
+const MoveStoryBeforeRet = returnOf(moveBefore); export type MoveStoryBeforeAction = typeof MoveStoryBeforeRet;
+const MoveStoryAfterRet = returnOf(moveAfter); export type MoveStoryAfterAction = typeof MoveStoryAfterRet;
+
 export type Action =
   | AddNewStoryAction
   | EditStoryAction
   | AddToSprintAction
-  | RemoveFromSprintAction;
+  | RemoveFromSprintAction
+  | MoveStoryBeforeAction
+  | MoveStoryAfterAction;

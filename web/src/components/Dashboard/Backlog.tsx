@@ -10,16 +10,18 @@ interface BacklogProps {
   edited?: State.StoryNumber;
 }
 
-const { Droppable } = require('react-drag-and-drop');
-
 function Backlog({ backlog, edited, actions }: BacklogProps & Actions) {
 
   return (
-    <Droppable types={['assigned-story']} onDrop={(data: any) => actions.removeFromSprint(Number(data['assigned-story']))}>
-      <div className="s-backlog">
-        <Stories type="notassigned-story" stories={backlog} edited={edited}/>
-      </div>
-    </Droppable>
+    <div className="s-backlog">
+      <Stories
+        type="notassigned-story"
+        stories={backlog}
+        edited={edited}
+        onMoveBefore={actions.moveBefore}
+        onMoveAfter={actions.moveAfter}
+      />
+    </div>
   );
 }
 

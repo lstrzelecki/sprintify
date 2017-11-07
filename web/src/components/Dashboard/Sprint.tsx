@@ -9,17 +9,19 @@ interface SprintProps {
   edited?: State.StoryNumber;
 }
 
-const { Droppable } = require('react-drag-and-drop');
-
 function Sprint({ sprint, edited, actions }: SprintProps & Actions) {
 
   return (
-    <Droppable types={['notassigned-story']} onDrop={(data: any) => actions.addToSprint(Number(data['notassigned-story']))}>
-      <div className="s-sprint">
-        <span className="s-sprint__label">Current Sprint</span>
-        <Stories type="assigned-story" stories={sprint.stories} edited={edited} />
-      </div>
-    </Droppable>
+    <div className="s-sprint">
+      <span className="s-sprint__label">Current Sprint</span>
+      <Stories
+        type="assigned-story"
+        stories={sprint.stories}
+        edited={edited}
+        onMoveBefore={actions.moveBefore}
+        onMoveAfter={actions.moveAfter}
+      />
+    </div>
   );
 }
 
