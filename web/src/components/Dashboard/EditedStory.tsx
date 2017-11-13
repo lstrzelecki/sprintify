@@ -1,12 +1,12 @@
 import * as React from 'react';
-
 import { State } from '../../state';
+import pure from '../pure';
 
 interface StoryProps {
   story: State.Story;
 }
 
-export default function EditedStory({ story }: StoryProps) {
+function EditedStory({ story }: StoryProps) {
 
   return (
     <li className={`s-story s-story--size-${story.size} s-story--edited`}>
@@ -15,3 +15,5 @@ export default function EditedStory({ story }: StoryProps) {
     </li>
   );
 }
+
+export default pure(EditedStory);

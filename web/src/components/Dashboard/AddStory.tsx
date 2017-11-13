@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Actions, withActions } from '../../actions/bind';
+import pure from '../pure';
 
 function AddStory({ actions }: Actions) {
 
@@ -10,4 +11,4 @@ function AddStory({ actions }: Actions) {
   );
 }
 
-export default withActions(AddStory);
+export default pure(withActions(AddStory));

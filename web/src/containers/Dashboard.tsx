@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import pure from '../components/pure';
 import { connect } from 'react-redux';
 
 import { State } from '../state';
@@ -22,4 +23,4 @@ function DashboardContainer(props: State & Actions) {
 }
 
 const connector = connect<State & Actions>(_.identity, actions);
-export default connector(DashboardContainer);
+export default connector(pure(DashboardContainer));

@@ -1,6 +1,7 @@
 import * as React from 'react';
+import pure from '../pure';
 
-export default function Settings() {
+function Settings() {
 
   return (
     <div className="s-navbar__margin">
@@ -17,3 +18,5 @@ export default function Settings() {
   );
 
 }
+
+export default pure(Settings);

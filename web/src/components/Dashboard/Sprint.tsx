@@ -1,4 +1,5 @@
 import * as React from 'react';
+import pure from '../pure';
 
 import Stories from './Stories';
 import { State } from '../../state';
@@ -25,4 +26,4 @@ function Sprint({ sprint, edited, actions }: SprintProps & Actions) {
   );
 }
 
-export default withActions(Sprint);
+export default pure(withActions(Sprint));

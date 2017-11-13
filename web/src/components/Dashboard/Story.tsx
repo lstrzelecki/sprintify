@@ -1,4 +1,5 @@
 import * as React from 'react';
+import pure from '../pure';
 
 import { State } from '../../state';
 import { withActions, Actions } from '../../actions/bind';
@@ -17,4 +18,4 @@ function Story({ story, actions }: StoryProps & Actions) {
   );
 }
 
-export default withActions(Story);
+export default pure(withActions(Story));

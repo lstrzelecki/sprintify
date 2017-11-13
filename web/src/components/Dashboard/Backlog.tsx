@@ -4,6 +4,7 @@ import Stories from './Stories';
 
 import { State } from '../../state';
 import { Actions, withActions } from '../../actions/bind';
+import pure from '../pure';
 
 interface BacklogProps {
   backlog: State.Backlog;
@@ -25,4 +26,4 @@ function Backlog({ backlog, edited, actions }: BacklogProps & Actions) {
   );
 }
 
-export default withActions(Backlog);
+export default pure(withActions(Backlog));

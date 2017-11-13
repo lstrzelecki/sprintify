@@ -1,4 +1,5 @@
 import * as React from 'react';
+import pure from '../pure';
 
 import './style.css';
 
@@ -14,7 +15,7 @@ interface DashboardProps {
   edited?: State.StoryNumber;
 }
 
-export default function Dashboard({ backlog, currentSprint, edited}: DashboardProps) {
+function Dashboard({ backlog, currentSprint, edited}: DashboardProps) {
   return (
     <div>
       <Settings />
@@ -26,3 +27,5 @@ export default function Dashboard({ backlog, currentSprint, edited}: DashboardPr
     </div>
   );
 }
+
+export default pure(Dashboard);

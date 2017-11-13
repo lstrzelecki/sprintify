@@ -3,19 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/lodash": "^4.14.77",
-    "@types/react-redux": "^5.0.10",
-    "@types/redux": "^3.6.0",
+    "create-react-class": "^15.6.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-drag-and-drop": "^2.4.0",
+    "react-flip-move": "^2.9.17",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.7.0",
+    "react-transition-group": "1.x",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
-    "todomvc-app-css": "^2.1.0",
     "typeface-open-sans": "^0.0.43"
   },
   "scripts": {
@@ -26,8 +25,12 @@
   },
   "devDependencies": {
     "@types/jest": "^21.1.2",
+    "@types/lodash": "^4.14.77",
     "@types/node": "^8.0.34",
     "@types/react": "^16.0.10",
-    "@types/react-dom": "^16.0.1"
+    "@types/react-dom": "^16.0.1",
+    "@types/react-redux": "^5.0.10",
+    "@types/react-transition-group": "^2.0.6",
+    "@types/redux": "^3.6.0"
   }
 }
