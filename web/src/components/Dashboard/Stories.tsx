@@ -14,14 +14,13 @@ import { withActions, Actions } from '../../actions/bind';
 interface StoriesProps {
   stories: State.Stories;
   edited?: State.StoryNumber;
-  type: string;
   onMoveBefore?: (story: number, relative: number) => void;
   onMoveAfter?: (story: number, relative: number) => void;
 }
 
 const noop = () => ({});
 
-function Stories({ stories, edited, type, onMoveBefore = noop, onMoveAfter = noop, actions }: StoriesProps & Actions) {
+function Stories({ stories, edited, onMoveBefore = noop, onMoveAfter = noop, actions }: StoriesProps & Actions) {
 
   const StoryWithSlotsPure = pure(StoryWithSlots);
 
@@ -43,11 +42,11 @@ function Stories({ stories, edited, type, onMoveBefore = noop, onMoveAfter = noo
   function StoryWithSlots({ story }: { story: State.Story }) {
     return (
         <li style={{position: 'relative'}}>
-          <Droppable types={['story']} className="s-slot s-slot--before" onDrop={(data: {}) => onMoveBefore(Number(data['story']), story.num)} />
+        <Droppable types={['story']} className="s-slot s-slot--before" onDrop={(data: { story: string}) => onMoveBefore(Number(data.story), story.num)} />
           <Draggable type="story" data={story.num}>
               <Story story={story} />
           </Draggable>
-          <Droppable types={['story']} className="s-slot s-slot--after" onDrop={(data: {}) => onMoveAfter(Number(data['story']), story.num)}/>
+          <Droppable types={['story']} className="s-slot s-slot--after" onDrop={(data: { story: string}) => onMoveAfter(Number(data.story), story.num)}/>
         </li>
     );
   }

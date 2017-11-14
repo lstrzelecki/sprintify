@@ -15,7 +15,6 @@ function Backlog({ backlog, edited, actions }: BacklogProps & Actions) {
   return (
     <div className="s-backlog">
       <Stories
-        type="backlog"
         stories={backlog}
         edited={edited}
         onMoveBefore={actions.moveBefore}

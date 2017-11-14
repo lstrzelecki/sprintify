@@ -1,5 +1,5 @@
 // import { State } from '../state';
-import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction } from '../actions/index';
+import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
 import { patch, append, nothing, matches, moveIf } from './patch';
@@ -7,7 +7,6 @@ import { Reducer } from '../types';
 import { State } from '../state';
 
 import * as _ from 'lodash/fp';
-import { ActionType } from '../types/index';
 
 const addNewStory: Reducer<State, AddNewStoryAction> =
   ({ num, title, size }) =>

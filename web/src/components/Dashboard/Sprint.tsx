@@ -16,7 +16,6 @@ function Sprint({ sprint, edited, actions }: SprintProps & Actions) {
     <div className="s-sprint">
       <span className="s-sprint__label">Current Sprint</span>
       <Stories
-        type="sprint"
         stories={sprint.stories}
         edited={edited}
         onMoveBefore={actions.moveBefore}
