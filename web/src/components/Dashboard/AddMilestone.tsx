@@ -5,8 +5,8 @@ import pure from '../pure';
 function AddStory({ actions }: Actions) {
 
   return (
-    <div onClick={() => actions.addNewStory('New Story')}>
-      <i className="fa fa-file-text" aria-hidden="true" />
+    <div onClick={() => actions.addNewMilestone('New Milestone')}>
+      <i className="fa fa-flag" aria-hidden="true" />
     </div>
   );
 }

@@ -57,7 +57,8 @@ export const nothing = _.identity;
 export const noop = _.identity;
 export const forAll = _.map;
 export const removeIf = _.reject;
-export const append = _.concat;
+// tslint:disable-next-line:no-any
+export const append = <T>(x: T) => _.concat(_ as any, x);
 export const negate = _.negate(_.identity);
 export const matches = _.isMatchWith(customizer);
 

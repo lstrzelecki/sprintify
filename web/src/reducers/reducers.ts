@@ -1,6 +1,6 @@
 // import { State } from '../state';
 import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction,
-  ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction } from '../actions';
+  ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction, MoveMilestoneAfterAction, AddNewMilestoneAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
 import { patch, append, nothing, matches, moveIf, forAll } from './patch';
@@ -25,7 +25,7 @@ const changeTitle = (title: string) => patch({title});
 
 const updateStory: Reducer<State, ChangeStoryTitleAction> =
   ({ num, title }) => patch({
-    backlog: forAll(
+    backlog: forAll<State.Story, State.Story>(
       changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
     )
   });
@@ -87,11 +87,29 @@ const moveSprintStoryAfter: Reducer<State, ReprioritizeSprintStoryAfterAction> =
       }
     });
 
+const addNewMilestone: Reducer<State, AddNewMilestoneAction> =
+  ({ name }) =>
+    patch({
+      milestones: append({ name, after: 1 })
+    });
+
+const changeAfter = (after: number) => patch({after});
+
+const moveMilestoneAfter: Reducer<State, MoveMilestoneAfterAction> =
+  ({ name, after }) =>
+    patch({
+      milestones: forAll<State.Milestone, State.Milestone>(
+        changeAfter(after).onlyIf(matches({name})).otherwise(nothing)
+      )
+    });
+
 // helpers:
 
 export default function reducerFor(action: Action) {
   switch (action.type) {
     case 'ADD_NEW_STORY': return addNewStory(action);
+    case 'ADD_NEW_MILESTONE': return addNewMilestone(action);
+    case 'MOVE_MILESTONE_AFTER': return moveMilestoneAfter(action);
     case 'EDIT_STORY': return editStory(action);
     case 'CHANGE_STORY_TITLE': return updateStory(action);
     case 'ADD_TO_SPRINT': return assignToSprint(action);

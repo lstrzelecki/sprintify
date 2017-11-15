@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export default function pure<P>(Component: React.ComponentType<P>): React.ComponentType<P> {
-  class PureComponentWrap extends React.PureComponent<P> {
+  class PureComponentWrap extends React.Component<P> {
     render() {
       return <Component {...this.props} />;
     }
@@ -11,10 +11,10 @@ export default function pure<P>(Component: React.ComponentType<P>): React.Compon
 
       const shouldUpdate = thisHash !== nextHash;
 
-      if (shouldUpdate) {
-        // tslint:disable-next-line:no-console
-        console.log('comp', Component.name, thisHash, nextHash);
-      }
+      // if (shouldUpdate) {
+      //   // tslint:disable-next-line:no-console
+      //   console.log('comp', Component.name, thisHash, nextHash);
+      // }
 
       return shouldUpdate;
     }

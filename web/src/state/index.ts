@@ -11,6 +11,11 @@ export namespace State {
     title: string;
   }
 
+  export interface Milestone {
+    name: string;
+    after: StoryNumber;
+  }
+
   export type Stories = Story[];
 
   export interface Sprint {
@@ -29,6 +34,7 @@ export namespace State {
     settings: Settings;
     backlog: Backlog;
     currentSprint: Sprint;
+    milestones: Milestone[];
     edited?: StoryNumber;
   }
 }
@@ -41,6 +47,8 @@ const story = (title: string, size: State.StorySize = 1) => {
   return { num: lastId++, title, size };
 };
 
+let mvp: State.Story;
+
 export const initial: State = {
   settings: {
     velocity: 6
@@ -50,17 +58,23 @@ export const initial: State = {
     story('Closing Sprint', 2),
     story('Setup of backend'),
     story('Sync with GraphQL endpoints', 2),
-    story('Storage in Elasticsearch'),
-    story('Stories On Board integration', 3)
+    mvp = story('Storage in Elasticsearch'),
+    story('Stories On Board integration', 3),
+    story('Support for Milestones', 2),
+    story('Support for Deadlines', 2)
   ],
   currentSprint: {
     stories: [
       story('Data model as ADT'),
-      story('Initial Layout', 2),
+      story('Initial layout', 2),
+      story('Fluent grid layout', 2),
       story('Adding new Story'),
       story('Re-prioritizing Story', 2),
     ],
     start: '2017-11-05',
     end: '2017-11-12'
-  }
+  },
+  milestones: [
+    { name: 'MVP', after: mvp.num }
+  ]
 };

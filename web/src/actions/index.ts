@@ -7,6 +7,10 @@ export function addNewStory(title: string, size: State.StorySize = 1) {
   return { num: sequenceNum++, title, size, ...type('ADD_NEW_STORY') };
 }
 
+export function addNewMilestone(name: string) {
+  return { name, ...type('ADD_NEW_MILESTONE') };
+}
+
 export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
@@ -21,6 +25,10 @@ export function moveBefore(num: number, relative: number) {
 
 export function moveAfter(num: number, relative: number) {
   return { num, relative, ...type('MOVE_STORY_AFTER') };
+}
+
+export function moveMilestoneAfter(name: string, after: number) {
+  return { name, after, ...type('MOVE_MILESTONE_AFTER') };
 }
 
 export function reprioritizeBacklogStoryAfter(num: number, relative: number) {
@@ -48,6 +56,7 @@ export function removeFromSprint(num: number) {
 }
 
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
+const AddNewMilestoneRet = returnOf(addNewMilestone); export type AddNewMilestoneAction = typeof AddNewMilestoneRet;
 const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof EditStoryRet;
 const ChangeStoryTitleRet = returnOf(changeStoryTitle); export type ChangeStoryTitleAction = typeof ChangeStoryTitleRet;
 
@@ -57,6 +66,8 @@ const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSp
 const MoveStoryBeforeRet = returnOf(moveBefore); export type MoveStoryBeforeAction = typeof MoveStoryBeforeRet;
 const MoveStoryAfterRet = returnOf(moveAfter); export type MoveStoryAfterAction = typeof MoveStoryAfterRet;
 
+const MoveMilestoneAfterRet = returnOf(moveMilestoneAfter); export type MoveMilestoneAfterAction = typeof MoveMilestoneAfterRet;
+
 const ReprioritizeBacklogStoryAfterRet = returnOf(reprioritizeBacklogStoryAfter); export type ReprioritizeBacklogStoryAfterAction = typeof ReprioritizeBacklogStoryAfterRet;
 const ReprioritizeBacklogStoryBeforeRet = returnOf(reprioritizeBacklogStoryBefore); export type ReprioritizeBacklogStoryBeforeAction = typeof ReprioritizeBacklogStoryBeforeRet;
 
@@ -65,6 +76,8 @@ const ReprioritizeSprintStoryBeforeRet = returnOf(reprioritizeSprintStoryBefore)
 
 export type Action =
   | AddNewStoryAction
+  | AddNewMilestoneAction
+  | MoveMilestoneAfterAction
   | EditStoryAction
   | AddToSprintAction
   | RemoveFromSprintAction
