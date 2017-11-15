@@ -14,4 +14,9 @@ const addingNewStory = (action$: Rx.Observable<Action>): Rx.Observable<Action> =
     .filter(({type}) => type === 'ADD_NEW_STORY')
     .map(({num}) => actions.editStory(num));
 
-export default combineEpics(addingNewStory, storyMigrationEpics);
+const endEditingStory = (action$: Rx.Observable<Action>): Rx.Observable<Action> =>
+  action$
+    .filter(({ type }) => type === 'CHANGE_STORY_TITLE')
+    .map(({ num }) => actions.editStory(0));
+
+export default combineEpics(addingNewStory, endEditingStory, storyMigrationEpics);

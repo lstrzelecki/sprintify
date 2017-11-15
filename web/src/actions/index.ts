@@ -11,6 +11,10 @@ export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
 
+export function changeStoryTitle(num: number, title: string) {
+  return { num, title, ...type('CHANGE_STORY_TITLE') };
+}
+
 export function moveBefore(num: number, relative: number) {
   return { num, relative, ...type('MOVE_STORY_BEFORE') };
 }
@@ -45,6 +49,8 @@ export function removeFromSprint(num: number) {
 
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof EditStoryRet;
+const ChangeStoryTitleRet = returnOf(changeStoryTitle); export type ChangeStoryTitleAction = typeof ChangeStoryTitleRet;
+
 const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
 const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
 
@@ -67,4 +73,5 @@ export type Action =
   | ReprioritizeBacklogStoryAfterAction
   | ReprioritizeBacklogStoryBeforeAction
   | ReprioritizeSprintStoryAfterAction
-  | ReprioritizeSprintStoryBeforeAction;
+  | ReprioritizeSprintStoryBeforeAction
+  | ChangeStoryTitleAction;

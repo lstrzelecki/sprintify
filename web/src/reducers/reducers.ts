@@ -1,8 +1,9 @@
 // import { State } from '../state';
-import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction } from '../actions';
+import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction,
+  ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
-import { patch, append, nothing, matches, moveIf } from './patch';
+import { patch, append, nothing, matches, moveIf, forAll } from './patch';
 import { Reducer } from '../types';
 import { State } from '../state';
 
@@ -19,6 +20,15 @@ const editStory: Reducer<State, EditStoryAction> =
     patch({
       edited: num
     });
+
+const changeTitle = (title: string) => patch({title});
+
+const updateStory: Reducer<State, ChangeStoryTitleAction> =
+  ({ num, title }) => patch({
+    backlog: forAll(
+      changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
+    )
+  });
 
 const assignToSprint: Reducer<State, AddToSprintAction> =
   ({ num }, { from, to } = moveIf(matches({ num }))) =>
@@ -83,6 +93,7 @@ export default function reducerFor(action: Action) {
   switch (action.type) {
     case 'ADD_NEW_STORY': return addNewStory(action);
     case 'EDIT_STORY': return editStory(action);
+    case 'CHANGE_STORY_TITLE': return updateStory(action);
     case 'ADD_TO_SPRINT': return assignToSprint(action);
     case 'REMOVE_FROM_SPRINT': return removeFromSprint(action);
     case 'REPRIORITIZE_BACKLOG_STORY:BEFORE': return moveBacklogStoryBefore(action);

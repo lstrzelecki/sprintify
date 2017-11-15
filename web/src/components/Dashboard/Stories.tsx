@@ -35,7 +35,6 @@ function Stories({ stories, edited, onMoveBefore = noop, onMoveAfter = noop, act
             )
           }
         </FlipMove>
-        {edited && <div className="s-mask" onClick={() => actions.editStory(0)} />}
       </div>
   );
 

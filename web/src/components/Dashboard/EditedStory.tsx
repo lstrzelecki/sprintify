@@ -1,19 +1,28 @@
 import * as React from 'react';
 import { State } from '../../state';
 import pure from '../pure';
+import Sync from '../sync';
+import { Actions, withActions } from '../../actions/bind';
 
 interface StoryProps {
   story: State.Story;
 }
 
-function EditedStory({ story }: StoryProps) {
+function EditedStory({ story, actions }: StoryProps & Actions) {
 
   return (
-    <li className={`s-story s-story--size-${story.size} s-story--edited`}>
-      <textarea className="s-story__title s-story__title--edit" value={story.title} cols={12}/>
-      <div className="s-story__size">Size: {story.size}</div>
-    </li>
+    <Sync initial={{title: story.title}}>
+      { api =>
+        <li>
+          <div className={`s-story s-story--size-${story.size} s-story--edited`}>
+            <textarea className="s-story__title s-story__title--edit" cols={12} {...api.sync('title')} />
+            <div className="s-story__size">Size: {story.size}</div>
+          </div>
+          <div className="s-mask" onClick={() => actions.changeStoryTitle(story.num, api.values.title)} />
+        </li>
+      }
+    </Sync>
   );
 }
 
-export default pure(EditedStory);
+export default pure(withActions(EditedStory));
