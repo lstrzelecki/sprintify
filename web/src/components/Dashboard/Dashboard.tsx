@@ -27,6 +27,9 @@ function Dashboard({ backlog, milestones, currentSprint, edited}: DashboardProps
         <div className="s-actions">
           <AddStory />
           <AddMilestone />
+          <div className="s-fab">
+            <i className="fa fa-plus" />
+          </div>
         </div>
       </div>
     </div>

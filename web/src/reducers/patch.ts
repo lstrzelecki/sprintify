@@ -1,8 +1,8 @@
 import * as _ from 'lodash/fp';
 
-function customizer(this: {}, val: {}, op: Function | RegExp | {}) {
+function customizer(this: {}, val: {}, op: Function | RegExp | {}, property: string, that: {}) {
   if (_.isFunction(op)) {
-    return op.apply(this, [val]);
+    return op.apply(that, [val]);
   }
   if (_.isRegExp(op)) {
     return op.test(val as string);

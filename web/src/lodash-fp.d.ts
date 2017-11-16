@@ -638,6 +638,8 @@ declare namespace fp {
 
     findIndex<T>(fn: (value: T) => boolean, list: T[]): number;
     last<T>(list: T[]): T;
+    flatMap<T, U>(fn: (value: T) => U[], list: T[]): U[];
+    flatMap<T, U>(fn: (value: T) => U[]): (list: T[]) => U[];
   }
 }
 

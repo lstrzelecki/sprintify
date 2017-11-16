@@ -1,6 +1,5 @@
-// import { State } from '../state';
-import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction,
-  ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction, ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction, MoveMilestoneAfterAction, AddNewMilestoneAction } from '../actions';
+import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
+  ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction, MoveMilestoneAfterAction, AddNewMilestoneAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
 import { patch, append, nothing, matches, moveIf, forAll } from './patch';

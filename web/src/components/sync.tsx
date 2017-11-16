@@ -12,6 +12,7 @@ interface SyncApi {
   // tslint:disable-next-line:no-any
   values: any;
   sync(prop: string): HTMLInputSync;
+  change(prop: string, value: {}): void;
 }
 
 interface SyncApiConsumer {
@@ -39,7 +40,8 @@ export default class Sync extends React.PureComponent<SyncProps, SyncState> {
     render() {
       return this.props.children({
         sync: this.sync.bind(this),
-        values: this.state.state
+        values: this.state.state,
+        change: this.change.bind(this)
       });
     }
 
@@ -47,7 +49,11 @@ export default class Sync extends React.PureComponent<SyncProps, SyncState> {
       return {
         name: prop,
         value: this.state.state[prop],
-        onChange: (e: SupportedInputs) => this.setState({ state: {...this.state, [prop]: e.target.value }})
+        onChange: (e: SupportedInputs) => this.setState({ state: {...this.state.state, [prop]: e.target.value }})
       };
+    }
+
+    change(prop: string, value: {}) {
+      this.setState({ state: { ...this.state.state, [prop]: value } });
     }
 }

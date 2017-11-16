@@ -100,7 +100,7 @@
   cursor: move;
 }
 .s-story--edited {
-  z-index: 20;
+  z-index: 120;
 }
 .s-story__title {
   font-size: 14px;
@@ -167,7 +167,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0,0,0,.12);
-  z-index: 10;
+  z-index: 100;
 }
 
 .s-story--size-1 {
@@ -180,22 +180,47 @@
   height: 180px;
 }
 
+.s-actions .s-fab {
+  position: absolute;
+  bottom: 0px;
+}
+.s-actions:hover .s-fab {
+  opacity: 0.5;
+}
+
+.s-actions > :not(.s-fab) {
+  bottom: 0px;
+}
+
+.s-actions:hover > :not(.s-fab):nth-child(1) {
+  bottom: 50px;
+}
+
+.s-actions:hover > :not(.s-fab):nth-child(2) {
+  bottom: 100px;
+}
+
 .s-actions {
   position: fixed;
   right: 40px;
   bottom: 40px;
+  width: 40px;
+  height: 200px;
 }
 
 .s-actions > * {
+  position: absolute;
   width: 20px;
   height: 20px;
   margin-top: 8px;
+  margin-bottom: 0px;
   padding: 10px 9px 10px 11px;
   border-radius: 20px;
   color: white;
   background-color: #606080;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.24);
   cursor: pointer;
+  transition: bottom 0.5s;
 }
 .s-actions .fa {
   font-size: 20px;
@@ -234,26 +259,52 @@
   display: block;
   left: 16px;
   right: 16px;
-  bottom: 16px;
+  bottom: 24px;
   position: absolute;
-  height: 16px;
-  border-bottom: 1px dashed #999999;
+  height: 1px;
+  border-bottom: 1px solid #aaaaaa;
+}
+.s-milestone--edited {
+  background-color: white;
+  z-index: 130;
+}
+.s-milestone__icon {
+  position: absolute;
+  top: -15px;
+  left: 2px;
+  font-size: 14px;
+  color: #999999;
 }
 .s-milestone__label {
   position: absolute;
-  top: 7px;
+  top: -15px;
   left: 16px;
-  padding: 0 4px;
+  padding: 0 2px;
   font-size: 12px;
+  color: #999999;
+}
+
+.s-milestone__date {
+  position: absolute;
+  bottom: -16px;
+  right: 0px;
+  padding: 0 4px;
+  font-size: 11px;
   color: #999999;
   background-color: #efefef;
 }
+
+.s-milestone__label--edit {
+  border: none;
+  width: 100px;
+  cursor: text;
+  outline: none;
+}
+
 .s-milestone__drag {
-  left: 0;
-  right: 0;
-  bottom: -16px;
   height: 32px;
-  position: absolute;
+  width: 100%;
   z-index: 100;
   cursor: move;
+  margin: 8px 0;
 }

@@ -26,20 +26,30 @@ const noop = () => ({});
 function Stories({ stories, milestones, edited, onMoveBefore = noop, onMoveAfter = noop, actions }: StoriesProps & Actions) {
 
   const StoryWithSlotsPure = pure(StoryWithSlots);
+  const DraggableMilestonePure = pure(DraggableMilestone);
 
   return (
       <div style={{height: '100%'}}>
         <FlipMove duration={500} typeName="ul" className="s-stories" easing="ease-out">
           {
-            stories.map((story, idx) =>
-              story.num === edited ?
-                <EditedStory key={`${story.num}`} story={story} /> :
-                <StoryWithSlotsPure key={`${story.num}`} story={story}/>
-            )
+            _.flatMap((story) => [
+                story.num === edited ? <EditedStory key={`${story.num}`} story={story} /> : <StoryWithSlotsPure key={`${story.num}`} story={story}/>,
+                <DraggableMilestonePure key={`${story.num}-milestone`} num={story.num} />
+              ],      stories)
           }
         </FlipMove>
       </div>
   );
+
+  function DraggableMilestone({num}: { num: number}) {
+    const milestone = _.find({ after: num }, milestones);
+    return milestone ? (
+      <li style={{ position: 'relative' }}>
+        <Draggable type="milestone" className="s-milestone__drag" data={milestone.name}>
+          <Milestone name={milestone.name} />
+        </Draggable>
+      </li>) : <li/>;
+  }
 
   function StoryWithSlots({ story }: { story: State.Story }) {
 
@@ -59,14 +69,8 @@ function Stories({ stories, milestones, edited, onMoveBefore = noop, onMoveAfter
               <Story story={story} />
           </Draggable>
           <Droppable types={['story', 'milestone']} className="s-slot s-slot--after" onDrop={onDropAfter}/>
-          {renderMilestone(story.num)}
         </li>
     );
-
-    function renderMilestone(num: number) {
-      const milestone = _.find({after: num}, milestones);
-      return milestone ? <Draggable type="milestone" className="s-milestone__drag" data={milestone.name}><Milestone name={milestone.name}/></Draggable> : null;
-    }
   }
 
 }
