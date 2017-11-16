@@ -16,6 +16,15 @@ export namespace State {
     after: StoryNumber;
   }
 
+  export interface Deadline {
+    name: string;
+    date: string;
+  }
+
+  export interface Estimation {
+    date: string;
+  }
+
   export type Stories = Story[];
 
   export interface Sprint {
@@ -35,6 +44,7 @@ export namespace State {
     backlog: Backlog;
     currentSprint: Sprint;
     milestones: Milestone[];
+    deadlines: Deadline[];
     edited?: StoryNumber;
   }
 }
@@ -76,5 +86,6 @@ export const initial: State = {
   },
   milestones: [
     { name: 'MVP', after: mvp.num }
-  ]
+  ],
+  deadlines: []
 };

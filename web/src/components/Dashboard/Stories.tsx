@@ -17,13 +17,14 @@ interface StoriesProps {
   stories: State.Stories;
   edited?: State.StoryNumber;
   milestones: State.Milestone[];
+  storyClass?: (s: State.Story) => string;
   onMoveBefore?: (story: number, relative: number) => void;
   onMoveAfter?: (story: number, relative: number) => void;
 }
 
 const noop = () => ({});
 
-function Stories({ stories, milestones, edited, onMoveBefore = noop, onMoveAfter = noop, actions }: StoriesProps & Actions) {
+function Stories({ stories, milestones, edited, storyClass = _.constant(''), onMoveBefore = noop, onMoveAfter = noop, actions }: StoriesProps & Actions) {
 
   const StoryWithSlotsPure = pure(StoryWithSlots);
   const DraggableMilestonePure = pure(DraggableMilestone);
@@ -32,23 +33,26 @@ function Stories({ stories, milestones, edited, onMoveBefore = noop, onMoveAfter
       <div style={{height: '100%'}}>
         <FlipMove duration={500} typeName="ul" className="s-stories" easing="ease-out">
           {
-            _.flatMap((story) => [
+            _.flatMap((story) => {
+              const milestone = _.find({ after: story.num }, milestones);
+              return [
                 story.num === edited ? <EditedStory key={`${story.num}`} story={story} /> : <StoryWithSlotsPure key={`${story.num}`} story={story}/>,
-                <DraggableMilestonePure key={`${story.num}-milestone`} num={story.num} />
-              ],      stories)
+                milestone && <DraggableMilestonePure key={`milestone-${milestone.name}`} milestone={milestone} />
+              ];
+            },        stories)
           }
         </FlipMove>
       </div>
   );
 
-  function DraggableMilestone({num}: { num: number}) {
-    const milestone = _.find({ after: num }, milestones);
-    return milestone ? (
-      <li style={{ position: 'relative' }}>
-        <Draggable type="milestone" className="s-milestone__drag" data={milestone.name}>
-          <Milestone name={milestone.name} />
-        </Draggable>
-      </li>) : <li/>;
+  function DraggableMilestone({milestone}: {milestone: State.Milestone}) {
+      return (
+        <li>
+          <Draggable type="milestone" className="s-milestone__drag" data={milestone.name}>
+            <Milestone {...milestone}  />
+          </Draggable>
+        </li>
+      );
   }
 
   function StoryWithSlots({ story }: { story: State.Story }) {
@@ -63,7 +67,7 @@ function Stories({ stories, milestones, edited, onMoveBefore = noop, onMoveAfter
     };
 
     return (
-        <li style={{position: 'relative'}}>
+        <li className={storyClass(story)}>
           <Droppable types={['story']} className="s-slot s-slot--before" onDrop={(data: { story: string}) => onMoveBefore(Number(data.story), story.num)} />
           <Draggable type="story" data={story.num}>
               <Story story={story} />

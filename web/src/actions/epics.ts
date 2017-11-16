@@ -7,7 +7,7 @@ import storyMigrationEpics from './story-migration-epics';
 
 import * as actions from './index';
 
-import { Action, AddNewStoryAction, ChangeStoryTitleAction, AddNewMilestoneAction } from './index';
+import { Action, AddNewStoryAction, RenameStoryAction, AddNewMilestoneAction } from './index';
 import { combineEpics } from 'redux-observable';
 import { Store } from 'react-redux';
 import { State } from '../state';
@@ -30,8 +30,8 @@ function lastStoryOf(store: Store<State>): number {
 
 const endEditingStory = (action$: Rx.Observable<Action>): Rx.Observable<Action> =>
   action$
-    .filter(({type}) => type === 'CHANGE_STORY_TITLE')
-    .map(action => action as ChangeStoryTitleAction)
+    .filter(({type}) => type === 'RENAME_STORY')
+    .map(action => action as RenameStoryAction)
     .map(({ num }) => actions.editStory(0));
 
 export default combineEpics(addingNewStory, addingNewMilestone, endEditingStory, storyMigrationEpics);

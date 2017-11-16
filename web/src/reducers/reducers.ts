@@ -1,5 +1,5 @@
 import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
-  ReprioritizeSprintStoryAfterAction, ChangeStoryTitleAction, MoveMilestoneAfterAction, AddNewMilestoneAction } from '../actions';
+  ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
 import { patch, append, nothing, matches, moveIf, forAll } from './patch';
@@ -22,10 +22,19 @@ const editStory: Reducer<State, EditStoryAction> =
 
 const changeTitle = (title: string) => patch({title});
 
-const updateStory: Reducer<State, ChangeStoryTitleAction> =
-  ({ num, title }) => patch({
-    backlog: forAll<State.Story, State.Story>(
-      changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
+const renameStory: Reducer<State, RenameStoryAction> =
+({ num, title }) => patch({
+  backlog: forAll<State.Story, State.Story>(
+    changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
+  )
+});
+
+const changeName = (name: string) => patch({name});
+
+const renameMilestone: Reducer<State, RenameMilestoneAction> =
+  ({ name, newName }) => patch({
+    milestones: forAll<State.Milestone, State.Milestone>(
+      changeName(newName).onlyIf(matches({ name })).otherwise(nothing)
     )
   });
 
@@ -110,7 +119,8 @@ export default function reducerFor(action: Action) {
     case 'ADD_NEW_MILESTONE': return addNewMilestone(action);
     case 'MOVE_MILESTONE_AFTER': return moveMilestoneAfter(action);
     case 'EDIT_STORY': return editStory(action);
-    case 'CHANGE_STORY_TITLE': return updateStory(action);
+    case 'RENAME_STORY': return renameStory(action);
+    case 'RENAME_MILESTONE': return renameMilestone(action);
     case 'ADD_TO_SPRINT': return assignToSprint(action);
     case 'REMOVE_FROM_SPRINT': return removeFromSprint(action);
     case 'REPRIORITIZE_BACKLOG_STORY:BEFORE': return moveBacklogStoryBefore(action);

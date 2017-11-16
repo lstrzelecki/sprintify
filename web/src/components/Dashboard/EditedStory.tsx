@@ -24,7 +24,7 @@ function EditedStory({ story, actions }: StoryProps & Actions) {
             />
             <div className="s-story__size">Size: {story.size}</div>
           </div>
-          <div className="s-mask" onClick={() => actions.changeStoryTitle(story.num, api.values.title)} />
+          <div className="s-mask" onClick={() => actions.renameStory(story.num, api.values.title)} />
         </li>
       }
     </Sync>

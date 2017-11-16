@@ -6,10 +6,9 @@ import Lock from '../sync';
 
 interface MilestoneProps {
   name: string;
-  date?: string;
 }
 
-function Milestone({ name, date, actions }: MilestoneProps & Actions) {
+function Milestone({ name, actions }: MilestoneProps & Actions) {
 
   const onRenameComplete = (newName: string) => actions.renameMilestone(name, newName);
 
@@ -30,7 +29,7 @@ function Milestone({ name, date, actions }: MilestoneProps & Actions) {
               <span className="s-milestone__label">{api.values.name}</span>
             }
             <span className="s-milestone__line"/>
-            <span className="s-milestone__date">{date}</span>
+            <span className="s-milestone__date">2017-12-15</span>
           </div>
           {api.values.edited && <div className="s-mask" onClick={() => {api.change('edited', false); onRenameComplete(api.values.name); }} />}
         </div>

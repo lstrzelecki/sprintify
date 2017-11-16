@@ -15,8 +15,12 @@ export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
 
-export function changeStoryTitle(num: number, title: string) {
-  return { num, title, ...type('CHANGE_STORY_TITLE') };
+export function renameStory(num: number, title: string) {
+  return { num, title, ...type('RENAME_STORY') };
+}
+
+export function renameMilestone(name: string, newName: string) {
+  return { name, newName, ...type('RENAME_MILESTONE') };
 }
 
 export function moveBefore(num: number, relative: number) {
@@ -58,7 +62,8 @@ export function removeFromSprint(num: number) {
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const AddNewMilestoneRet = returnOf(addNewMilestone); export type AddNewMilestoneAction = typeof AddNewMilestoneRet;
 const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof EditStoryRet;
-const ChangeStoryTitleRet = returnOf(changeStoryTitle); export type ChangeStoryTitleAction = typeof ChangeStoryTitleRet;
+const RenameStoryRet = returnOf(renameStory); export type RenameStoryAction = typeof RenameStoryRet;
+const RenameMilestoneRet = returnOf(renameMilestone); export type RenameMilestoneAction = typeof RenameMilestoneRet;
 
 const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
 const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
@@ -87,4 +92,5 @@ export type Action =
   | ReprioritizeBacklogStoryBeforeAction
   | ReprioritizeSprintStoryAfterAction
   | ReprioritizeSprintStoryBeforeAction
-  | ChangeStoryTitleAction;
+  | RenameStoryAction
+  | RenameMilestoneAction;
