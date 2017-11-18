@@ -11,6 +11,10 @@ export function addNewMilestone(name: string) {
   return { name, ...type('ADD_NEW_MILESTONE') };
 }
 
+export function addNewDeadline(name: string) {
+  return { name, ...type('ADD_NEW_DEADLINE') };
+}
+
 export function editStory(num: number) {
   return { num, ...type('EDIT_STORY') };
 }
@@ -21,6 +25,14 @@ export function renameStory(num: number, title: string) {
 
 export function renameMilestone(name: string, newName: string) {
   return { name, newName, ...type('RENAME_MILESTONE') };
+}
+
+export function renameDeadline(name: string, newName: string) {
+  return { name, newName, ...type('RENAME_DEADLINE') };
+}
+
+export function changeDeadline(name: string, newDate: string) {
+  return { name, newDate, ...type('CHANGE_DEADLINE') };
 }
 
 export function moveBefore(num: number, relative: number) {
@@ -61,9 +73,11 @@ export function removeFromSprint(num: number) {
 
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const AddNewMilestoneRet = returnOf(addNewMilestone); export type AddNewMilestoneAction = typeof AddNewMilestoneRet;
+const AddNewDeadlineRet = returnOf(addNewDeadline); export type AddNewDeadlineAction = typeof AddNewDeadlineRet;
 const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof EditStoryRet;
 const RenameStoryRet = returnOf(renameStory); export type RenameStoryAction = typeof RenameStoryRet;
 const RenameMilestoneRet = returnOf(renameMilestone); export type RenameMilestoneAction = typeof RenameMilestoneRet;
+const RenameDeadlineRet = returnOf(renameDeadline); export type RenameDeadlineAction = typeof RenameDeadlineRet;
 
 const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
 const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
@@ -72,6 +86,7 @@ const MoveStoryBeforeRet = returnOf(moveBefore); export type MoveStoryBeforeActi
 const MoveStoryAfterRet = returnOf(moveAfter); export type MoveStoryAfterAction = typeof MoveStoryAfterRet;
 
 const MoveMilestoneAfterRet = returnOf(moveMilestoneAfter); export type MoveMilestoneAfterAction = typeof MoveMilestoneAfterRet;
+const ChangeDeadlineRet = returnOf(changeDeadline); export type ChangeDeadlineAction = typeof ChangeDeadlineRet;
 
 const ReprioritizeBacklogStoryAfterRet = returnOf(reprioritizeBacklogStoryAfter); export type ReprioritizeBacklogStoryAfterAction = typeof ReprioritizeBacklogStoryAfterRet;
 const ReprioritizeBacklogStoryBeforeRet = returnOf(reprioritizeBacklogStoryBefore); export type ReprioritizeBacklogStoryBeforeAction = typeof ReprioritizeBacklogStoryBeforeRet;
@@ -82,7 +97,9 @@ const ReprioritizeSprintStoryBeforeRet = returnOf(reprioritizeSprintStoryBefore)
 export type Action =
   | AddNewStoryAction
   | AddNewMilestoneAction
+  | AddNewDeadlineAction
   | MoveMilestoneAfterAction
+  | ChangeDeadlineAction
   | EditStoryAction
   | AddToSprintAction
   | RemoveFromSprintAction
@@ -93,4 +110,5 @@ export type Action =
   | ReprioritizeSprintStoryAfterAction
   | ReprioritizeSprintStoryBeforeAction
   | RenameStoryAction
-  | RenameMilestoneAction;
+  | RenameMilestoneAction
+  | RenameDeadlineAction;

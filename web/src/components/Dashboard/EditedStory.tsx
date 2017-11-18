@@ -11,21 +11,20 @@ interface StoryProps {
 function EditedStory({ story, actions }: StoryProps & Actions) {
 
   return (
-    <Sync initial={{title: story.title}}>
+    <Sync initial={{title: story.title, edited: 'title'}}>
       { api =>
-        <li>
+        <div>
           <div className={`s-story s-story--size-${story.size} s-story--edited`}>
             <textarea
               className="s-story__title s-story__title--edit"
               cols={12}
-              autoFocus={true}
               onFocus={e => e.currentTarget.select()}
               {...api.sync('title')}
             />
             <div className="s-story__size">Size: {story.size}</div>
           </div>
           <div className="s-mask" onClick={() => actions.renameStory(story.num, api.values.title)} />
-        </li>
+        </div>
       }
     </Sync>
   );

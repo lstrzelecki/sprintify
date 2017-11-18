@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 
 export namespace State {
 
@@ -19,6 +20,13 @@ export namespace State {
   export interface Deadline {
     name: string;
     date: string;
+  }
+
+  export interface Marker {
+    name: string;
+    after: StoryNumber;
+    date: string;
+    type: 'deadline' | 'milestone';
   }
 
   export interface Estimation {
@@ -87,5 +95,7 @@ export const initial: State = {
   milestones: [
     { name: 'MVP', after: mvp.num }
   ],
-  deadlines: []
+  deadlines: [
+    { name: 'Critical deadline', date: moment().add(14, 'days').format('YYYY-MM-DD') }
+  ]
 };

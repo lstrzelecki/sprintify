@@ -1,5 +1,5 @@
 import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
-  ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction } from '../actions';
+  ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction, AddNewDeadlineAction, RenameDeadlineAction, ChangeDeadlineAction } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
 import { patch, append, nothing, matches, moveIf, forAll } from './patch';
@@ -30,6 +30,7 @@ const renameStory: Reducer<State, RenameStoryAction> =
 });
 
 const changeName = (name: string) => patch({name});
+const changeDate = (date: string) => patch({date});
 
 const renameMilestone: Reducer<State, RenameMilestoneAction> =
   ({ name, newName }) => patch({
@@ -37,6 +38,21 @@ const renameMilestone: Reducer<State, RenameMilestoneAction> =
       changeName(newName).onlyIf(matches({ name })).otherwise(nothing)
     )
   });
+
+const renameDeadline: Reducer<State, RenameDeadlineAction> =
+  ({ name, newName }) => patch({
+    deadlines: forAll<State.Deadline, State.Deadline>(
+      changeName(newName).onlyIf(matches({ name })).otherwise(nothing)
+    )
+  });
+
+const changeDeadline: Reducer<State, ChangeDeadlineAction> =
+  ({ name, newDate }) =>
+    patch({
+      deadlines: forAll<State.Deadline, State.Deadline>(
+        changeDate(newDate).onlyIf(matches({ name })).otherwise(nothing)
+      )
+    });
 
 const assignToSprint: Reducer<State, AddToSprintAction> =
   ({ num }, { from, to } = moveIf(matches({ num }))) =>
@@ -101,6 +117,12 @@ const addNewMilestone: Reducer<State, AddNewMilestoneAction> =
       milestones: append({ name, after: 1 })
     });
 
+const addNewDeadline: Reducer<State, AddNewDeadlineAction> =
+  ({ name }) =>
+    patch({
+      deadlines: append({ name, date: '' })
+    });
+
 const changeAfter = (after: number) => patch({after});
 
 const moveMilestoneAfter: Reducer<State, MoveMilestoneAfterAction> =
@@ -117,10 +139,13 @@ export default function reducerFor(action: Action) {
   switch (action.type) {
     case 'ADD_NEW_STORY': return addNewStory(action);
     case 'ADD_NEW_MILESTONE': return addNewMilestone(action);
+    case 'ADD_NEW_DEADLINE': return addNewDeadline(action);
     case 'MOVE_MILESTONE_AFTER': return moveMilestoneAfter(action);
+    case 'CHANGE_DEADLINE': return changeDeadline(action);
     case 'EDIT_STORY': return editStory(action);
     case 'RENAME_STORY': return renameStory(action);
     case 'RENAME_MILESTONE': return renameMilestone(action);
+    case 'RENAME_DEADLINE': return renameDeadline(action);
     case 'ADD_TO_SPRINT': return assignToSprint(action);
     case 'REMOVE_FROM_SPRINT': return removeFromSprint(action);
     case 'REPRIORITIZE_BACKLOG_STORY:BEFORE': return moveBacklogStoryBefore(action);

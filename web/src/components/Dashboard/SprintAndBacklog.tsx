@@ -6,14 +6,14 @@ import { State } from '../../state';
 import { Actions, withActions } from '../../actions/bind';
 import pure from '../pure';
 
-interface BacklogProps {
+interface SprintAndBacklogProps {
   sprint: State.Sprint;
   backlog: State.Backlog;
-  milestones: (State.Milestone & State.Estimation)[];
+  milestones: State.Marker[];
   edited?: State.StoryNumber;
 }
 
-function SprintAndBacklog({ sprint, backlog, milestones, edited, actions }: BacklogProps & Actions) {
+function SprintAndBacklog({ sprint, backlog, milestones, edited, actions }: SprintAndBacklogProps & Actions) {
 
   const fromSprint = (num: number) => _.find({num}, sprint.stories) !== undefined;
 
@@ -21,7 +21,7 @@ function SprintAndBacklog({ sprint, backlog, milestones, edited, actions }: Back
     <div className="s-backlog">
       <Stories
         stories={[ ...sprint.stories, ...backlog ]}
-        storyClass={(s) => fromSprint(s.num) ? 's-sprint-story' : ''}
+        storyClass={(s) => fromSprint(s.num) ? 's-story--sprint' : 's-story--backlog'}
         milestones={milestones}
         edited={edited}
         onMoveBefore={actions.moveBefore}

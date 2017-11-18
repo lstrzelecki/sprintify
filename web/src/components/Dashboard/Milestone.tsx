@@ -16,14 +16,13 @@ function Milestone({ name, date, actions }: MilestoneProps & Actions) {
   return (
     <Lock initial={{ edited: false, name }}>
       { api =>
-        <div>
-          <div className={`s-milestone ${api.values.edited ? 's-milestone--edited' : ''}`} onDoubleClick={() => api.change('edited', true)}>
-            <i className="fa fa-calendar-times-o s-milestone__icon" aria-hidden="true"/>
+        <div className="s-marker">
+          <div className={`s-milestone ${api.values.edited ? 's-milestone--edited' : ''}`} onDoubleClick={() => api.edit('name')}>
+            <i className="fa fa-flag s-milestone__icon" aria-hidden="true"/>
             { api.values.edited ?
               <input
                 className="s-milestone__label s-milestone__label--edit"
                 type="text"
-                autoFocus={true}
                 onFocus={e => e.currentTarget.select()}
                 {...api.sync('name')}
               /> :
@@ -32,7 +31,7 @@ function Milestone({ name, date, actions }: MilestoneProps & Actions) {
             <span className="s-milestone__line"/>
             <span className="s-milestone__date">{date}</span>
           </div>
-          {api.values.edited && <div className="s-mask" onClick={() => {api.change('edited', false); onRenameComplete(api.values.name); }} />}
+          {api.values.edited && <div className="s-mask" onClick={() => {api.save(); onRenameComplete(api.values.name); }} />}
         </div>
       }
     </Lock>

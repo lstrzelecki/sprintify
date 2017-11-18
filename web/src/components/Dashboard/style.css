@@ -11,7 +11,7 @@
 
   color: white;
   /* background-color: #00AA99; */
-  background-color: #606080;
+  background-color: #545E70;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.24);
 }
 
@@ -45,7 +45,7 @@
 .s-board {
   position: absolute;
   display: flex;
-  top: 72px;
+  top: 80px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -77,9 +77,8 @@
 
 .s-stories {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   flex-wrap: wrap;
-  writing-mode: vertical-lr;
   align-content: flex-start;
   justify-content: flex-start;
   list-style: none;
@@ -88,11 +87,27 @@
   padding: 0;
 }
 
-.s-sprint-story {
+.s-story--sprint {
   background-color: #cccccc;
   border-radius: 6px;
   margin: -4px;
-  padding: 4px;
+  padding: 20px;
+}
+
+.s-story--sprint:first-child:before {
+  content: 'Current Sprint';
+  position: absolute;
+  top: -16px;
+  font-size: 12px;
+  color: #999999;
+  display: block;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+.s-story--backlog {
+  margin: -4px;
+  padding: 20px;
 }
 
 .s-stories > li {
@@ -100,16 +115,16 @@
 }
 
 .s-story {
-  writing-mode: lr;
   display: block;
   position: relative;
-  margin: 16px;
+  margin: 0px;
   padding: 8px;
   background-color: white;
   border-radius: 2px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.12);
   width: 120px;
   cursor: move;
+  border-top: 3px solid #545E70;
 }
 .s-story--edited {
   z-index: 120;
@@ -122,16 +137,16 @@
   position: absolute;
   left: 8px;
   right: 8px;
-  height: 40px;
+  height: 32px;
   margin: 0px 4px;
   z-index: 10;
 }
 .s-slot--before {
-  top: -20px;
+  top: -12px;
   z-index: 10;
 }
 .s-slot--after {
-  bottom: -20px;
+  bottom: -12px;
   z-index: 20;
 }
 .s-slot.over:after {
@@ -140,7 +155,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 20px;
+  top: 50%;
   height: 2px;
   background-color: #999999;
 }
@@ -212,6 +227,10 @@
   bottom: 100px;
 }
 
+.s-actions:hover > :not(.s-fab):nth-child(3) {
+  bottom: 150px;
+}
+
 .s-actions {
   position: fixed;
   right: 40px;
@@ -229,7 +248,7 @@
   padding: 10px 9px 10px 11px;
   border-radius: 20px;
   color: white;
-  background-color: #606080;
+  background-color: #545E70;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.24);
   cursor: pointer;
   transition: bottom 0.5s;
@@ -266,15 +285,19 @@
   transition: opacity 5000ms ease-in;
 }
 
+.s-marker {
+  height: 32px;
+}
+
 .s-milestone {
-  writing-mode: lr;
   display: block;
-  left: 0;
-  right: 0;
+  left: 4px;
+  right: 4px;
   bottom: 0;
   top: 0;
   position: absolute;
   z-index: 120;
+  height: 48px;
 }
 .s-milestone--edited {
   background-color: white;
@@ -287,6 +310,16 @@
   font-size: 14px;
   color: #999999;
 }
+
+
+.s-milestone__line {
+  position: absolute;
+  bottom: 23px;
+  right: 8px;
+  left: 8px;
+  border-bottom: 1px solid #aaaaaa;
+}
+
 .s-milestone__label {
   position: absolute;
   top: 7px;
@@ -296,12 +329,14 @@
   color: #999999;
 }
 
-.s-milestone__line {
-  position: absolute;
-  bottom: 23px;
-  right: 8px;
-  left: 8px;
-  border-bottom: 1px solid #aaaaaa;
+.s-milestone__label--edit, .s-milestone__date--edit {
+  border: none;
+  width: 100px;
+  cursor: text;
+  outline: none;
+}
+.s-milestone__date--edit {
+  text-align: right;
 }
 
 .s-milestone__date {
@@ -313,18 +348,19 @@
   color: #999999;
 }
 
-.s-milestone__label--edit {
-  border: none;
-  width: 100px;
-  top: 9px;
-  cursor: text;
-  outline: none;
-}
-
 .s-milestone__drag {
   height: 32px;
-  width: 168px;
+  width: 152px;
   z-index: 100;
   cursor: move;
   margin: 8px 0;
 }
+
+.s-deadline__nodrag {
+  height: 32px;
+  width: 152px;
+  z-index: 100;
+  cursor: text;
+  margin: 8px 0;
+}
+

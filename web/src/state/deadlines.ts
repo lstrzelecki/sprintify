@@ -1,29 +1,50 @@
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { State } from './index';
-import { Moment } from 'moment';
+import * as moment from 'moment';
 const business = require('moment-business');
 
-type MilestoneWithEstimation = State.Milestone & State.Estimation;
+export default function calculateMarkers(sprint: State.Sprint, backlog: State.Backlog, milestones: State.Milestone[], deadlines: State.Deadline[]): State.Marker[] {
 
-export default function calculateDeadlines(sprint: State.Sprint, backlog: State.Backlog, milestones: State.Milestone[]): MilestoneWithEstimation[] {
+  return [...predictMilestones(sprint, backlog, milestones),
+          ...estimateDeadlines(sprint, backlog, deadlines)];
+}
+
+export function predictMilestones(sprint: State.Sprint, backlog: State.Backlog, milestones: State.Milestone[]) {
 
   const velocityPerSprint = _.sumBy(sprint.stories, 'size');
   const velocityPerDay = velocityPerSprint / 5;
 
-  const estimations = _.reduce(backlog, (acc, story) => {
-
-    let {date} = _.last(acc) as {date: Moment};
-    date = business.addWeekDays(date.clone(), (story.size / velocityPerDay));
-
-    return [...acc, {num: story.num, date}];
-
-  },                           [{ num: _.head(backlog), date: moment(sprint.end) }]);
-
-  console.log('estimating milestones', velocityPerDay, estimations);
+  const estimations = estimateStories(backlog, velocityPerDay, sprint.end);
 
   return _.map(milestones, m => {
-    const { date } = _.find(estimations, { num: m.after }) as { date: Moment };
-    return { ...m, date: date.format('YYYY-MM-DD') };
+    const { date } = _.find(estimations, { num: m.after }) || { date: sprint.end};
+    return { ...m, date: date, type: 'milestone' } as State.Marker;
   });
+}
+
+export function estimateDeadlines(sprint: State.Sprint, backlog: State.Backlog, deadlines: State.Deadline[]) {
+
+  const velocityPerSprint = _.sumBy(sprint.stories, 'size');
+  const velocityPerDay = velocityPerSprint / 5;
+
+  const estimations = estimateStories(backlog, velocityPerDay, sprint.end);
+
+  return _.map(deadlines, d => {
+    const { num } = _.findLast(estimations, s => s.date < d.date ) || _.last(estimations) || { num: -1 };
+    return { ...d, after: num, type: 'deadline' } as State.Marker;
+  });
+}
+
+function estimateStories(stories: State.Backlog, velocityPerDay: number, start: string) {
+
+  type StoryEstimation = { num: number; date: string; };
+
+  const reducer = (acc: StoryEstimation[], story: State.Story) => {
+    let { date } = _.last(acc) as StoryEstimation;
+    date = business.addWeekDays(moment(date), (story.size / velocityPerDay)).format('YYYY-MM-DD');
+    return [...acc, { num: story.num, date }];
+  };
+
+  const [{num}] = stories;
+  return _.reduce(stories, reducer, [{ num, date: start }]);
 }

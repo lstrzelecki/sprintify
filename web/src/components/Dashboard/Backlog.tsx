@@ -7,7 +7,7 @@ import pure from '../pure';
 
 interface BacklogProps {
   backlog: State.Backlog;
-  milestones: State.Milestone[];
+  milestones: State.Marker[];
   edited?: State.StoryNumber;
 }
 

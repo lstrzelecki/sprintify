@@ -1,3 +1,7 @@
+input, textarea {
+  font-family: 'Open Sans';
+}
+
 body {
   margin: 0;
   padding: 0;

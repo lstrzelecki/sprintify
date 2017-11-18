@@ -16,6 +16,7 @@ function DashboardContainer(props: State & Actions) {
     <Dashboard
       backlog={props.backlog}
       milestones={props.milestones}
+      deadlines={props.deadlines}
       currentSprint={props.currentSprint}
       edited={props.edited}
     />
