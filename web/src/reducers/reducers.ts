@@ -1,8 +1,11 @@
-import { AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
-  ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction, AddNewDeadlineAction, RenameDeadlineAction, ChangeDeadlineAction } from '../actions';
+import {
+  AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
+  ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction,
+  AddNewDeadlineAction, RenameDeadlineAction, ChangeDeadlineAction, DragInProgressAction, RemoveMilestoneAction, RemoveDeadlineAction, RemoveStoryAction
+} from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
-import { patch, append, nothing, matches, moveIf, forAll } from './patch';
+import { patch, append, nothing, matches, moveIf, forAll, removeIf } from './patch';
 import { Reducer } from '../types';
 import { State } from '../state';
 
@@ -20,17 +23,17 @@ const editStory: Reducer<State, EditStoryAction> =
       edited: num
     });
 
-const changeTitle = (title: string) => patch({title});
+const changeTitle = (title: string) => patch({ title });
 
 const renameStory: Reducer<State, RenameStoryAction> =
-({ num, title }) => patch({
-  backlog: forAll<State.Story, State.Story>(
-    changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
-  )
-});
+  ({ num, title }) => patch({
+    backlog: forAll<State.Story, State.Story>(
+      changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
+    )
+  });
 
-const changeName = (name: string) => patch({name});
-const changeDate = (date: string) => patch({date});
+const changeName = (name: string) => patch({ name });
+const changeDate = (date: string) => patch({ date });
 
 const renameMilestone: Reducer<State, RenameMilestoneAction> =
   ({ name, newName }) => patch({
@@ -84,7 +87,7 @@ function moveRelativeTo(num: number, relative: number, relation: 'before' | 'aft
 }
 
 const moveBacklogStoryBefore: Reducer<State, ReprioritizeBacklogStoryBeforeAction> =
-  ({ num, relative}) =>
+  ({ num, relative }) =>
     patch({
       backlog: moveRelativeTo(num, relative, 'before')
     });
@@ -123,14 +126,41 @@ const addNewDeadline: Reducer<State, AddNewDeadlineAction> =
       deadlines: append({ name, date: '' })
     });
 
-const changeAfter = (after: number) => patch({after});
+const changeAfter = (after: number) => patch({ after });
 
 const moveMilestoneAfter: Reducer<State, MoveMilestoneAfterAction> =
   ({ name, after }) =>
     patch({
       milestones: forAll<State.Milestone, State.Milestone>(
-        changeAfter(after).onlyIf(matches({name})).otherwise(nothing)
+        changeAfter(after).onlyIf(matches({ name })).otherwise(nothing)
       )
+    });
+
+const dragInProgressStatus: Reducer<State, DragInProgressAction> =
+  ({ dragInProgress }) =>
+    patch({
+      ui: { dragInProgress }
+    });
+
+const removeMilestone: Reducer<State, RemoveMilestoneAction> =
+  ({ name }) =>
+    patch({
+      milestones: removeIf(matches({ name }))
+    });
+
+const removeDeadline: Reducer<State, RemoveDeadlineAction> =
+  ({ name }) =>
+    patch({
+      deadlines: removeIf(matches({ name }))
+    });
+
+const removeStory: Reducer<State, RemoveStoryAction> =
+  ({ num }) =>
+    patch({
+      backlog: removeIf(matches({ num })),
+      currentSprint: {
+        stories: removeIf(matches({ num }))
+      }
     });
 
 // helpers:
@@ -146,12 +176,16 @@ export default function reducerFor(action: Action) {
     case 'RENAME_STORY': return renameStory(action);
     case 'RENAME_MILESTONE': return renameMilestone(action);
     case 'RENAME_DEADLINE': return renameDeadline(action);
+    case 'REMOVE_DEADLINE': return removeDeadline(action);
+    case 'REMOVE_MILESTONE': return removeMilestone(action);
+    case 'REMOVE_STORY': return removeStory(action);
     case 'ADD_TO_SPRINT': return assignToSprint(action);
     case 'REMOVE_FROM_SPRINT': return removeFromSprint(action);
     case 'REPRIORITIZE_BACKLOG_STORY:BEFORE': return moveBacklogStoryBefore(action);
     case 'REPRIORITIZE_BACKLOG_STORY:AFTER': return moveBacklogStoryAfter(action);
     case 'REPRIORITIZE_SPRINT_STORY:BEFORE': return moveSprintStoryBefore(action);
     case 'REPRIORITIZE_SPRINT_STORY:AFTER': return moveSprintStoryAfter(action);
+    case 'DRAG_IN_PROGRESS': return dragInProgressStatus(action);
     default: return nothing;
   }
 }

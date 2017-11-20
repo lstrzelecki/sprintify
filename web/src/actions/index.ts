@@ -1,6 +1,9 @@
 import { State } from '../state';
 import { type, returnOf } from '../types';
 
+import * as ui from './ui';
+export * from './ui';
+
 let sequenceNum = 100;
 
 export function addNewStory(title: string, size: State.StorySize = 1) {
@@ -71,6 +74,18 @@ export function removeFromSprint(num: number) {
   return { num, ...type('REMOVE_FROM_SPRINT') };
 }
 
+export function removeStory(num: number) {
+  return { num, ...type('REMOVE_STORY') };
+}
+
+export function removeMilestone(name: string) {
+  return { name, ...type('REMOVE_MILESTONE') };
+}
+
+export function removeDeadline(name: string) {
+  return { name, ...type('REMOVE_DEADLINE') };
+}
+
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const AddNewMilestoneRet = returnOf(addNewMilestone); export type AddNewMilestoneAction = typeof AddNewMilestoneRet;
 const AddNewDeadlineRet = returnOf(addNewDeadline); export type AddNewDeadlineAction = typeof AddNewDeadlineRet;
@@ -78,6 +93,10 @@ const EditStoryRet = returnOf(editStory); export type EditStoryAction = typeof E
 const RenameStoryRet = returnOf(renameStory); export type RenameStoryAction = typeof RenameStoryRet;
 const RenameMilestoneRet = returnOf(renameMilestone); export type RenameMilestoneAction = typeof RenameMilestoneRet;
 const RenameDeadlineRet = returnOf(renameDeadline); export type RenameDeadlineAction = typeof RenameDeadlineRet;
+
+const RemoveDeadlineRet = returnOf(removeDeadline); export type RemoveDeadlineAction = typeof RemoveDeadlineRet;
+const RemoveMilestoneRet = returnOf(removeMilestone); export type RemoveMilestoneAction = typeof RemoveMilestoneRet;
+const RemoveStoryRet = returnOf(removeStory); export type RemoveStoryAction = typeof RemoveStoryRet;
 
 const AddToSprintRet = returnOf(addToSprint); export type AddToSprintAction = typeof AddToSprintRet;
 const RemoveFromSprintRet = returnOf(removeFromSprint); export type RemoveFromSprintAction = typeof RemoveFromSprintRet;
@@ -111,4 +130,8 @@ export type Action =
   | ReprioritizeSprintStoryBeforeAction
   | RenameStoryAction
   | RenameMilestoneAction
-  | RenameDeadlineAction;
+  | RenameDeadlineAction
+  | RemoveDeadlineAction
+  | RemoveMilestoneAction
+  | RemoveStoryAction
+  | ui.DragInProgressAction;

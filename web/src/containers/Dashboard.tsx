@@ -19,6 +19,7 @@ function DashboardContainer(props: State & Actions) {
       deadlines={props.deadlines}
       currentSprint={props.currentSprint}
       edited={props.edited}
+      ui={props.ui}
     />
   );
 

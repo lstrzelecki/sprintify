@@ -72,7 +72,13 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
   function DraggableMilestone({milestone}: {milestone: State.Milestone}) {
       return (
         <li style={{padding: '0px 8px'}}>
-          <Draggable type="milestone" className="s-milestone__drag" data={milestone.name}>
+          <Draggable
+            type="milestone"
+            className="s-milestone__drag"
+            data={milestone.name}
+            onDragStart={() => actions.dragInProgress(true)}
+            onDragEnd={() => actions.dragInProgress(false)}
+          >
             <Milestone {...milestone}  />
           </Draggable>
         </li>
@@ -82,11 +88,18 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
   function StoryWithSlots({ story }: { story: State.Story }) {
 
     const onDropAfter = (data: { story?: string, milestone?: string }) => {
+      actions.dragInProgress(false);
       if (data.story) {
         onMoveAfter(Number(data.story), story.num);
       }
       if (data.milestone) {
         actions.moveMilestoneAfter(data.milestone, story.num);
+      }
+    };
+    const onDropBefore = (data: { story?: string }) => {
+      actions.dragInProgress(false);
+      if (data.story) {
+        onMoveBefore(Number(data.story), story.num);
       }
     };
 
@@ -100,8 +113,13 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
 
     return (
         <li className={storyClass(story)}>
-          <Droppable types={['story']} className="s-slot s-slot--before" onDrop={(data: { story: string}) => onMoveBefore(Number(data.story), story.num)} />
-          <Draggable type="story" data={story.num}>
+          <Droppable types={['story']} className="s-slot s-slot--before" onDrop={onDropBefore} />
+          <Draggable
+            type="story"
+            data={story.num}
+            onDragStart={() => actions.dragInProgress(true)}
+            onDragEnd={() => actions.dragInProgress(false)}
+          >
               <Story story={story} />
           </Draggable>
           <Droppable types={['story', 'milestone']} className="s-slot s-slot--after" onDrop={onDropAfter}/>

@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { UI } from './ui';
 
 export namespace State {
 
@@ -57,7 +58,7 @@ export namespace State {
   }
 }
 
-export type State = State.Dashboard;
+export type State = State.Dashboard & UI.State;
 
 let lastId = 1;
 
@@ -79,7 +80,13 @@ export const initial: State = {
     mvp = story('Storage in Elasticsearch'),
     story('Stories On Board integration', 3),
     story('Support for Milestones', 2),
-    story('Support for Deadlines', 2)
+    story('Support for Deadlines', 2),
+    story('Removing Stories'),
+    story('Removing Milestones'),
+    story('Removing Deadlines'),
+    story('Sync progress indicator', 2),
+    story('GraphQL subscriptions', 3),
+    story('AWS Lambda deployment', 3),
   ],
   currentSprint: {
     stories: [
@@ -97,5 +104,9 @@ export const initial: State = {
   ],
   deadlines: [
     { name: 'Critical deadline', date: moment().add(14, 'days').format('YYYY-MM-DD') }
-  ]
+  ],
+
+  ui: {
+    dragInProgress: false
+  }
 };

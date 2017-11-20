@@ -12,6 +12,8 @@ import SprintAndBacklog from './SprintAndBacklog';
 import AddStory from './AddStory';
 import AddMilestone from './AddMilestone';
 import AddDeadline from './AddDeadline';
+import Remove from './Remove';
+import { UI } from '../../state/ui';
 
 interface DashboardProps {
   backlog: State.Backlog;
@@ -21,24 +23,40 @@ interface DashboardProps {
   edited?: State.StoryNumber;
 }
 
-function Dashboard({ backlog, milestones, deadlines, currentSprint, edited}: DashboardProps) {
+function Dashboard({ backlog, milestones, deadlines, currentSprint, edited, ui}: DashboardProps & UI.State) {
 
   const markers = estimateMilestones(currentSprint, backlog, milestones, deadlines);
 
   return (
     <div>
       <Settings />
+      <div className="s-toolbar">
+        <i className="fa fa-file-text-o" /><label>Story</label>
+        <i className="fa fa-calendar-times-o" /><label>Deadline</label>
+        <i className="fa fa-flag-o" /><label>Milestone</label>
+        <i className="fa fa-download" /><label>Import</label>
+        <div className="spacer"/>
+        <i className="fa fa-trash-o" /><label>Remove</label>
+      </div>
       <div className="s-board">
         {/* <Sprint sprint={currentSprint} edited={edited} /> */}
         {/* <Backlog backlog={backlog} milestones={milestones} edited={edited} /> */}
         <SprintAndBacklog sprint={currentSprint} backlog={backlog} milestones={markers} edited={edited} />
-        <div className="s-actions">
-          <AddStory />
-          <AddMilestone />
-          <AddDeadline />
-          <div className="s-fab">
-            <i className="fa fa-plus" />
-          </div>
+
+        <div className="s-actions-area">
+          { ui.dragInProgress ?
+            <div className="s-actions">
+              <Remove />
+            </div> :
+            <div className="s-actions">
+              <AddStory />
+              <AddMilestone />
+              <AddDeadline />
+              <div className="s-fab">
+                <i className="fa fa-plus" />
+              </div>
+            </div>
+          }
         </div>
       </div>
     </div>
