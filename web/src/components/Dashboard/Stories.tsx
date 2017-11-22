@@ -30,7 +30,7 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
 
   const StoryWithSlotsPure = pure(StoryWithSlots);
   const DraggableMilestonePure = pure(DraggableMilestone);
-  const NonDraggableDeadlinePure = pure(NonDraggableDeadline);
+  const DraggableDeadlinePure = pure(DraggableDeadline);
 
   return (
       <div style={{height: '100%'}}>
@@ -55,16 +55,22 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
   function renderMarker(marker: State.Marker) {
     return [
       marker.type === 'milestone' && <DraggableMilestonePure key={`milestone-${marker.name}`} milestone={marker} />,
-      marker.type === 'deadline' && <NonDraggableDeadlinePure key={`deadline-${marker.name}`} deadline={marker} />
+      marker.type === 'deadline' && <DraggableDeadlinePure key={`deadline-${marker.name}`} deadline={marker} />
     ];
   }
 
-  function NonDraggableDeadline({ deadline }: { deadline: State.Deadline }) {
+  function DraggableDeadline({ deadline }: { deadline: State.Deadline }) {
     return (
       <li style={{ padding: '0px 8px' }}>
-        <div className="s-deadline__nodrag">
+        <Draggable
+          type="deadline"
+          className="s-deadline__drag"
+          data={deadline.name}
+          onDragStart={() => actions.dragInProgress(true)}
+          onDragEnd={() => actions.dragInProgress(false)}
+        >
           <Deadline {...deadline} />
-        </div>
+        </Draggable>
       </li>
     );
   }

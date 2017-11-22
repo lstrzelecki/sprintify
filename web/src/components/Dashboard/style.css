@@ -374,11 +374,11 @@
   margin: 8px 0;
 }
 
-.s-deadline__nodrag {
+.s-deadline__drag {
   height: 32px;
   width: 152px;
   z-index: 100;
-  cursor: text;
+  cursor: move;
   margin: 8px 0;
 }
 

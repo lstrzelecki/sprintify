@@ -6,13 +6,14 @@ const { Droppable } = require('react-drag-and-drop');
 
 function Remove({ actions }: Actions) {
 
-  const onDrop = (data: { story?: string, milestone?: string, deadline?: string }) => {
+  const onDrop = (data: { story?: string; milestone?: string; deadline?: string }) => {
     if (data.story) {
       actions.removeStory(Number(data.story));
     }
     if (data.milestone) {
       actions.removeMilestone(data.milestone);
     }
+
     if (data.deadline) {
       actions.removeDeadline(data.deadline);
     }
