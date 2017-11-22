@@ -71,9 +71,22 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = __webpack_require__(1);
+var graphqlHTTP = __webpack_require__(2);
+var graphql_1 = __webpack_require__(3);
 var app = express();
+var schema = graphql_1.buildSchema("\n  type Query {\n    hello: String\n  }\n");
+var root = {
+    hello: function () {
+        return 'Hello world GraphQL!';
+    },
+};
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+}));
 app.get('/api/', function (req, res) {
-    res.send('Hello World');
+    res.send('Hello World REST!');
 });
 var PORT = 4000;
 app.listen(PORT, function () { return console.log("API listening on port " + PORT); });
@@ -84,6 +97,18 @@ app.listen(PORT, function () { return console.log("API listening on port " + POR
 /***/ (function(module, exports) {
 
 module.exports = require("express");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("express-graphql");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql");
 
 /***/ })
 /******/ ])));
