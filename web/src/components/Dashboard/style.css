@@ -55,7 +55,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  margin-left: 80px;
+  /* margin-left: 80px; */
   overflow-y: hidden;
   overflow-x: scroll;
 }
@@ -389,7 +389,8 @@
   bottom: 0;
   width: 72px;
   z-index: 20;
-  display: flex;
+  /* display: flex; */
+  display: none;
   flex-direction: column;
   background-color: white;
   color: #545E70;

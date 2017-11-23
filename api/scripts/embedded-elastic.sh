@@ -50,4 +50,7 @@ echo "done"
 echo "*** Started [status=$status]"
 
 echo "*** Creating schema"
-#node ./scripts/create-schema.js
+node ../scripts/create-schema.js
+echo "*** Populating DEMO data"
+node ../scripts/demo-data.js
+echo "*** DEMO data populated!"

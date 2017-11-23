@@ -69,17 +69,24 @@
 
 "use strict";
 
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = __webpack_require__(1);
 var graphqlHTTP = __webpack_require__(2);
 var graphql_1 = __webpack_require__(3);
+var backlog_1 = __webpack_require__(4);
 var app = express();
-var schema = graphql_1.buildSchema("\n  type Query {\n    hello: String\n  }\n");
-var root = {
-    hello: function () {
+var schema = graphql_1.buildSchema("\n  type Query {\n    hello: String,\n    backlog: [Story]\n  }\n\n  type Story {\n    num: Int,\n    title: String,\n    size: Int\n  }\n");
+var root = __assign({ hello: function () {
         return 'Hello world GraphQL!';
-    },
-};
+    } }, backlog_1.default);
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
@@ -109,6 +116,61 @@ module.exports = require("express-graphql");
 /***/ (function(module, exports) {
 
 module.exports = require("graphql");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(5);
+var elasticsearch_1 = __webpack_require__(6);
+exports.default = {
+    backlog: function () {
+        return elasticsearch_1.default.search({
+            index: 'backlog',
+            type: 'story'
+        })
+            .then(function (_a) {
+            var hits = _a.hits;
+            return hits;
+        })
+            .then(function (_a) {
+            var hits = _a.hits;
+            return hits;
+        })
+            .then(_.map('_source'));
+    }
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash/fp");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var elasticsearch = __webpack_require__(7);
+var elasticsearchHost = process.env.ELASTICSEARCH_HOST || 'localhost';
+var client = new elasticsearch.Client({
+    host: elasticsearchHost + ":9200"
+});
+exports.default = client;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("elasticsearch");
 
 /***/ })
 /******/ ])));
