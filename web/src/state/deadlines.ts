@@ -45,6 +45,10 @@ function estimateStories(stories: State.Backlog, velocityPerDay: number, start: 
     return [...acc, { num: story.num, date }];
   };
 
+  if (!stories.length) {
+    return [];
+  }
+
   const [{num}] = stories;
   return _.reduce(stories, reducer, [{ num, date: start }]);
 }

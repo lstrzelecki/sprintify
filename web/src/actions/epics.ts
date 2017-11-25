@@ -5,6 +5,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/delay';
 
 import storyMigrationEpics from './story-migration-epics';
+import serverSyncEpics from './server-sync-epics';
 
 import * as actions from './index';
 
@@ -36,4 +37,4 @@ const endEditingStory = (action$: Rx.Observable<Action>): Rx.Observable<Action> 
     .map(action => action as RenameStoryAction)
     .map(({ num }) => actions.editStory(0));
 
-export default combineEpics(addingNewStory, addingNewMilestone, endEditingStory, storyMigrationEpics);
+export default combineEpics(addingNewStory, addingNewMilestone, endEditingStory, storyMigrationEpics, serverSyncEpics);

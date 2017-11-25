@@ -1,7 +1,7 @@
 import {
   AddToSprintAction, ReprioritizeBacklogStoryBeforeAction, ReprioritizeBacklogStoryAfterAction, ReprioritizeSprintStoryBeforeAction,
   ReprioritizeSprintStoryAfterAction, RenameStoryAction, MoveMilestoneAfterAction, AddNewMilestoneAction, RenameMilestoneAction,
-  AddNewDeadlineAction, RenameDeadlineAction, ChangeDeadlineAction, DragInProgressAction, RemoveMilestoneAction, RemoveDeadlineAction, RemoveStoryAction
+  AddNewDeadlineAction, RenameDeadlineAction, ChangeDeadlineAction, DragInProgressAction, RemoveMilestoneAction, RemoveDeadlineAction, RemoveStoryAction, InitializeDashboardAction
 } from '../actions';
 import { Action, AddNewStoryAction, EditStoryAction, RemoveFromSprintAction } from '../actions';
 
@@ -10,6 +10,10 @@ import { Reducer } from '../types';
 import { State } from '../state';
 
 import * as _ from 'lodash/fp';
+
+const initializeDashboard: Reducer<State, InitializeDashboardAction> =
+  ({ dashboard }) =>
+    patch(dashboard);
 
 const addNewStory: Reducer<State, AddNewStoryAction> =
   ({ num, title, size }) =>
@@ -167,6 +171,7 @@ const removeStory: Reducer<State, RemoveStoryAction> =
 
 export default function reducerFor(action: Action) {
   switch (action.type) {
+    case 'INITIALIZE_DASHBOARD': return initializeDashboard(action);
     case 'ADD_NEW_STORY': return addNewStory(action);
     case 'ADD_NEW_MILESTONE': return addNewMilestone(action);
     case 'ADD_NEW_DEADLINE': return addNewDeadline(action);

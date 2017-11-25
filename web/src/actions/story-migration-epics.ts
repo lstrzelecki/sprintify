@@ -42,7 +42,7 @@ const adjustMilestones = ({ num, relative }: MoveStoryAction, {milestones, backl
   return Rx.Observable.from(milestones)
     .filter(matches({after: num}))
     .map(m => actions.moveMilestoneAfter(m.name, previousStoryNum()));
-}
+};
 
 const assignToSprint = ({ num }: MoveStoryAction) => Rx.Observable.of(actions.addToSprint(num));
 const removeFromSprint = ({ num }: MoveStoryAction) => Rx.Observable.of(actions.removeFromSprint(num));

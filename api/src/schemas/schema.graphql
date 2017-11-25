@@ -1,0 +1,32 @@
+type Query {
+  dashboard: Dashboard
+}
+
+type Dashboard {
+  backlog: [Story],
+  milestones: [Milestone],
+  deadlines: [Deadline],
+  currentSprint: Sprint
+}
+
+type Story {
+  num: Int,
+  title: String,
+  size: Int
+}
+
+type Milestone {
+  name: String,
+  after: Int
+}
+
+type Deadline {
+  name: String,
+  date: String
+}
+
+type Sprint {
+  stories: [Story],
+  start: String,
+  end: String
+}

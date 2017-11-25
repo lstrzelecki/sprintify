@@ -11,22 +11,30 @@ import 'typeface-open-sans';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
+import { createBrowserHistory } from 'history';
+import { routerMiddleware as createRouterMiddleware, ConnectedRouter } from 'react-router-redux';
 
 import App from './containers/App';
 import app from './reducers';
 import epics from './actions/epics';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const epicMiddleware = createEpicMiddleware(epics);
+
+const history = createBrowserHistory();
+const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(
   app,
-  composeEnhancers(applyMiddleware(epicMiddleware))
+  composeEnhancers(applyMiddleware(routerMiddleware, epicMiddleware))
 );
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );

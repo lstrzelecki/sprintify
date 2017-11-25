@@ -19,7 +19,8 @@ module.exports = (env) => ({
     plugins: [],
     module: {
         loaders: [
-            {test: /\.ts(x?)$/, loader: 'ts-loader'}
+            { test: /\.ts(x?)$/, loader: 'ts-loader'},
+            { test: /\.graphql$/, loader: 'raw-loader' }
         ]
     }
 });

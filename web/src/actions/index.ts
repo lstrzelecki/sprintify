@@ -1,10 +1,16 @@
 import { State } from '../state';
 import { type, returnOf } from '../types';
+import { LOCATION_CHANGE } from 'react-router-redux';
+import { Location } from 'history';
 
 import * as ui from './ui';
 export * from './ui';
 
 let sequenceNum = 100;
+
+export function initializeDashboard(dashboard: State.Dashboard) {
+  return { dashboard, ...type('INITIALIZE_DASHBOARD') };
+}
 
 export function addNewStory(title: string, size: State.StorySize = 1) {
   return { num: sequenceNum++, title, size, ...type('ADD_NEW_STORY') };
@@ -86,6 +92,8 @@ export function removeDeadline(name: string) {
   return { name, ...type('REMOVE_DEADLINE') };
 }
 
+const InitializeDashboardRet = returnOf(initializeDashboard); export type InitializeDashboardAction = typeof InitializeDashboardRet;
+
 const AddNewStoryRet = returnOf(addNewStory); export type AddNewStoryAction = typeof AddNewStoryRet;
 const AddNewMilestoneRet = returnOf(addNewMilestone); export type AddNewMilestoneAction = typeof AddNewMilestoneRet;
 const AddNewDeadlineRet = returnOf(addNewDeadline); export type AddNewDeadlineAction = typeof AddNewDeadlineRet;
@@ -113,7 +121,11 @@ const ReprioritizeBacklogStoryBeforeRet = returnOf(reprioritizeBacklogStoryBefor
 const ReprioritizeSprintStoryAfterRet = returnOf(reprioritizeSprintStoryAfter); export type ReprioritizeSprintStoryAfterAction = typeof ReprioritizeSprintStoryAfterRet;
 const ReprioritizeSprintStoryBeforeRet = returnOf(reprioritizeSprintStoryBefore); export type ReprioritizeSprintStoryBeforeAction = typeof ReprioritizeSprintStoryBeforeRet;
 
+type LocationChangeAction = { type: typeof LOCATION_CHANGE, payload: Location };
+
 export type Action =
+  | LocationChangeAction
+  | InitializeDashboardAction
   | AddNewStoryAction
   | AddNewMilestoneAction
   | AddNewDeadlineAction

@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import { UI } from './ui';
 
 export namespace State {
@@ -60,51 +59,18 @@ export namespace State {
 
 export type State = State.Dashboard & UI.State;
 
-let lastId = 1;
-
-const story = (title: string, size: State.StorySize = 1) => {
-  return { num: lastId++, title, size };
-};
-
-let mvp: State.Story;
-
 export const initial: State = {
   settings: {
     velocity: 6
   },
-  backlog: [
-    story('Changing velocity', 2),
-    story('Closing Sprint', 2),
-    story('Setup of backend'),
-    story('Sync with GraphQL endpoints', 2),
-    mvp = story('Storage in Elasticsearch'),
-    story('Stories On Board integration', 3),
-    story('Support for Milestones', 2),
-    story('Support for Deadlines', 2),
-    story('Removing Stories'),
-    story('Removing Milestones'),
-    story('Removing Deadlines'),
-    story('Sync progress indicator', 2),
-    story('GraphQL subscriptions', 3),
-    story('AWS Lambda deployment', 3),
-  ],
+  backlog: [],
   currentSprint: {
-    stories: [
-      story('Data model as ADT'),
-      story('Initial layout', 2),
-      story('Fluent grid layout', 2),
-      story('Adding new Story'),
-      story('Re-prioritizing Story', 2),
-    ],
+    stories: [],
     start: '2017-11-05',
     end: '2017-11-12'
   },
-  milestones: [
-    { name: 'MVP', after: mvp.num }
-  ],
-  deadlines: [
-    { name: 'Critical deadline', date: moment().add(14, 'days').format('YYYY-MM-DD') }
-  ],
+  milestones: [],
+  deadlines: [],
 
   ui: {
     dragInProgress: false

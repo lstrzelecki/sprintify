@@ -14,6 +14,42 @@ const mappings = [{
         "title":  { "type": "text" },
         "size":   { "type": "integer" }
       }
+    },
+    "milestone": {
+      "dynamic": "strict",
+      "properties": {
+        "name":   { "type": "keyword" },
+        "after":  { "type": "integer" }
+      }
+    },
+    "deadline": {
+      "dynamic": "strict",
+      "properties": {
+        "name":   { "type": "keyword" },
+        "date":   { "type": "date" }
+      }
+    }
+  }
+}, {
+  "template": "sprints",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "sprint": {
+      "dynamic": "strict",
+      "properties": {
+        "start": { "type": "date" },
+        "end":   { "type": "date"    },
+        "stories":  {
+          "properties": {
+            "num":    { "type": "integer" },
+            "title":  { "type": "text" },
+            "size":   { "type": "integer" }
+          }
+        }
+      }
     }
   }
 }];
