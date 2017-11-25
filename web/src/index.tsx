@@ -14,9 +14,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware as createRouterMiddleware, ConnectedRouter } from 'react-router-redux';
 
-import App from './containers/App';
-import app from './reducers';
-import epics from './actions/epics';
+import { App, reducer, epics } from './app';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -26,7 +24,7 @@ const history = createBrowserHistory();
 const routerMiddleware = createRouterMiddleware(history);
 
 const store = createStore(
-  app,
+  reducer,
   composeEnhancers(applyMiddleware(routerMiddleware, epicMiddleware))
 );
 
