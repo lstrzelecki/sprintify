@@ -63,14 +63,14 @@ export default combineEpics(
 
 // -- helpers:
 
-function backlog(store: Store<State>): (num: number) => boolean {
+function backlog(store: Store<State>): (num: State.StoryNumber) => boolean {
   return num => {
     const stories = store.getState().backlog;
     return !_.isUndefined(_.find({ num }, stories));
   };
 }
 
-function sprint(store: Store<State>): (num: number) => boolean {
+function sprint(store: Store<State>): (num: State.StoryNumber) => boolean {
   return num => {
     const stories = store.getState().currentSprint.stories;
     return !_.isUndefined(_.find({ num }, stories));
@@ -78,7 +78,7 @@ function sprint(store: Store<State>): (num: number) => boolean {
 }
 
 interface Selector {
-  (store: Store<State>): (num: number) => boolean;
+  (store: Store<State>): (num: State.StoryNumber) => boolean;
 }
 
 interface Target {

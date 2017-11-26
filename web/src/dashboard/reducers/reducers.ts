@@ -23,7 +23,9 @@ import {
   InitializeDashboardAction,
   AddNewStoryAction,
   EditStoryAction,
-  RemoveFromSprintAction
+  RemoveFromSprintAction,
+  StoryUpdatedSyncAction,
+  StoryCreatedSyncAction
 } from '../actions';
 import { Action } from '../actions';
 
@@ -37,6 +39,26 @@ const addNewStory: Reducer<State, AddNewStoryAction> =
       backlog: append({ num, title, size })
     });
 
+const updateStory = (story: State.Story) => patch(story);
+
+const syncStoryCreate: Reducer<State, StoryCreatedSyncAction> =
+  ({ story }) =>
+    patch({
+      backlog: append({ ...story })
+    });
+
+const syncStoryUpdate: Reducer<State, StoryUpdatedSyncAction> =
+  ({ story }) => patch({
+    backlog: forAll<State.Story, State.Story>(
+      updateStory(story).onlyIf(matches({ num: story.num })).otherwise(nothing)
+    ),
+    currentSprint: {
+      stories: forAll<State.Story, State.Story>(
+        updateStory(story).onlyIf(matches({ num: story.num })).otherwise(nothing)
+      )
+    }
+  });
+
 const editStory: Reducer<State, EditStoryAction> =
   ({ num }) =>
     patch({
@@ -49,7 +71,12 @@ const renameStory: Reducer<State, RenameStoryAction> =
   ({ num, title }) => patch({
     backlog: forAll<State.Story, State.Story>(
       changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
-    )
+    ),
+    currentSprint: {
+      stories: forAll<State.Story, State.Story>(
+        changeTitle(title).onlyIf(matches({ num })).otherwise(nothing)
+      )
+    }
   });
 
 const changeName = (name: string) => patch({ name });
@@ -91,7 +118,7 @@ const removeFromSprint: Reducer<State, RemoveFromSprintAction> =
       currentSprint: { stories: from }
     });
 
-function moveRelativeTo(num: number, relative: number, relation: 'before' | 'after') {
+function moveRelativeTo(num: State.StoryNumber, relative: State.StoryNumber, relation: 'before' | 'after') {
   return (array: State.Story[]): State.Story[] => {
 
     if (num === relative) {
@@ -146,7 +173,7 @@ const addNewDeadline: Reducer<State, AddNewDeadlineAction> =
       deadlines: append({ name, date: '' })
     });
 
-const changeAfter = (after: number) => patch({ after });
+const changeAfter = (after: State.StoryNumber) => patch({ after });
 
 const moveMilestoneAfter: Reducer<State, MoveMilestoneAfterAction> =
   ({ name, after }) =>
@@ -188,6 +215,8 @@ const removeStory: Reducer<State, RemoveStoryAction> =
 export default function reducerFor(action: Action) {
   switch (action.type) {
     case 'INITIALIZE_DASHBOARD': return initializeDashboard(action);
+    case 'STORY_CREATED:SYNC': return syncStoryCreate(action);
+    case 'STORY_UPDATED:SYNC': return syncStoryUpdate(action);
     case 'ADD_NEW_STORY': return addNewStory(action);
     case 'ADD_NEW_MILESTONE': return addNewMilestone(action);
     case 'ADD_NEW_DEADLINE': return addNewDeadline(action);

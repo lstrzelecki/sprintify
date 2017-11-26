@@ -1,14 +1,13 @@
 import { State } from '../state';
 import { type, returnOf } from '@utils/types';
-
-let sequenceNum = 100;
+import uuid from '@utils/uuid';
 
 export function initializeDashboard(dashboard: State.Dashboard) {
   return { dashboard, ...type('INITIALIZE_DASHBOARD') };
 }
 
 export function addNewStory(title: string, size: State.StorySize = 1) {
-  return { num: sequenceNum++, title, size, ...type('ADD_NEW_STORY') };
+  return { num: uuid(), title, size, ...type('ADD_NEW_STORY') };
 }
 
 export function addNewMilestone(name: string) {
@@ -19,11 +18,11 @@ export function addNewDeadline(name: string) {
   return { name, ...type('ADD_NEW_DEADLINE') };
 }
 
-export function editStory(num: number) {
+export function editStory(num: State.StoryNumber) {
   return { num, ...type('EDIT_STORY') };
 }
 
-export function renameStory(num: number, title: string) {
+export function renameStory(num: State.StoryNumber, title: string) {
   return { num, title, ...type('RENAME_STORY') };
 }
 
@@ -39,43 +38,43 @@ export function changeDeadline(name: string, newDate: string) {
   return { name, newDate, ...type('CHANGE_DEADLINE') };
 }
 
-export function moveBefore(num: number, relative: number) {
+export function moveBefore(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('MOVE_STORY_BEFORE') };
 }
 
-export function moveAfter(num: number, relative: number) {
+export function moveAfter(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('MOVE_STORY_AFTER') };
 }
 
-export function moveMilestoneAfter(name: string, after: number) {
+export function moveMilestoneAfter(name: string, after: State.StoryNumber) {
   return { name, after, ...type('MOVE_MILESTONE_AFTER') };
 }
 
-export function reprioritizeBacklogStoryAfter(num: number, relative: number) {
+export function reprioritizeBacklogStoryAfter(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('REPRIORITIZE_BACKLOG_STORY:AFTER') };
 }
 
-export function reprioritizeBacklogStoryBefore(num: number, relative: number) {
+export function reprioritizeBacklogStoryBefore(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('REPRIORITIZE_BACKLOG_STORY:BEFORE') };
 }
 
-export function reprioritizeSprintStoryAfter(num: number, relative: number) {
+export function reprioritizeSprintStoryAfter(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('REPRIORITIZE_SPRINT_STORY:AFTER') };
 }
 
-export function reprioritizeSprintStoryBefore(num: number, relative: number) {
+export function reprioritizeSprintStoryBefore(num: State.StoryNumber, relative: State.StoryNumber) {
   return { num, relative, ...type('REPRIORITIZE_SPRINT_STORY:BEFORE') };
 }
 
-export function addToSprint(num: number) {
+export function addToSprint(num: State.StoryNumber) {
   return { num, ...type('ADD_TO_SPRINT') };
 }
 
-export function removeFromSprint(num: number) {
+export function removeFromSprint(num: State.StoryNumber) {
   return { num, ...type('REMOVE_FROM_SPRINT') };
 }
 
-export function removeStory(num: number) {
+export function removeStory(num: State.StoryNumber) {
   return { num, ...type('REMOVE_STORY') };
 }
 

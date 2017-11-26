@@ -6,6 +6,7 @@
     "@reactivex/rxjs": "^5.5.2",
     "create-react-class": "^15.6.2",
     "font-awesome": "^4.7.0",
+    "graphql": "^0.11.7",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
     "moment": "^2.19.2",
@@ -22,7 +23,9 @@
     "react-transition-group": "1.x",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
-    "typeface-open-sans": "^0.0.43"
+    "subscriptions-transport-ws": "^0.9.1",
+    "typeface-open-sans": "^0.0.43",
+    "ws": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -40,7 +43,17 @@
     "@types/react-router": "^4.0.18",
     "@types/react-router-redux": "^5.0.10",
     "@types/react-transition-group": "^2.0.6",
-    "@types/redux": "^3.6.0"
+    "@types/redux": "^3.6.0",
+    "@types/uuid": "^3.4.3",
+    "@types/ws": "^3.2.0"
   },
-  "proxy": "http://localhost:4000"
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:4000/"
+    },
+    "/subscriptions": {
+      "target": "ws://localhost:4001/",
+      "ws": true
+    }
+  }
 }

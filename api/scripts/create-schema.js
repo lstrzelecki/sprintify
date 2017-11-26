@@ -10,7 +10,7 @@ const mappings = [{
     "story": {
       "dynamic": "strict",
       "properties": {
-        "num":    { "type": "integer" },
+        "num":    { "type": "keyword" },
         "title":  { "type": "text" },
         "size":   { "type": "integer" }
       }
@@ -18,14 +18,16 @@ const mappings = [{
     "milestone": {
       "dynamic": "strict",
       "properties": {
-        "name":   { "type": "keyword" },
+        "num":    { "type": "keyword" },
+        "name":   { "type": "text" },
         "after":  { "type": "integer" }
       }
     },
     "deadline": {
       "dynamic": "strict",
       "properties": {
-        "name":   { "type": "keyword" },
+        "num":    { "type": "keyword" },
+        "name":   { "type": "text" },
         "date":   { "type": "date" }
       }
     }

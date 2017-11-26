@@ -10,7 +10,7 @@ type Dashboard {
 }
 
 type Story {
-  num: Int,
+  num: String,
   title: String,
   size: Int
 }
@@ -29,4 +29,37 @@ type Sprint {
   stories: [Story],
   start: String,
   end: String
+}
+
+input StoryInput {
+  num: String!,
+  title: String!,
+  size: Int = 1
+}
+
+type StoryNum {
+  num: String
+}
+
+type Mutation {
+  createStory(story: StoryInput): StoryNum,
+  updateStory(story: StoryInput): StoryNum
+}
+
+type StoryCreatedEvent {
+  num: String
+  title: String
+  size: Int
+}
+
+type StoryUpdatedEvent {
+  num: String
+  title: String
+  size: Int
+}
+
+union DashboardUpdatedEvent = StoryCreatedEvent | StoryUpdatedEvent
+
+type Subscription {
+  dashboardUpdates: DashboardUpdatedEvent
 }

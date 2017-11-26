@@ -3,8 +3,7 @@ import { UI } from './ui';
 export namespace State {
 
   export type StorySize = 1 | 2 | 3;
-
-  export type StoryNumber = number;
+  export type StoryNumber = string;
 
   export interface Story {
     num: StoryNumber;

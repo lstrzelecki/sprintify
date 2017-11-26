@@ -45,7 +45,7 @@ const stories = [
   deadline('Release window', '2017-12-20')
 ];
 
-indexSprints([currentSprint]).catch(console.log);
+indexSprints([currentSprint]);
 indexBacklog(stories);
 
 function indexBacklog(documents) {
@@ -63,7 +63,7 @@ function indexBacklog(documents) {
       index: 'backlog',
       refresh: true,
       // body: documents
-      body: _.flatMap(documents, d => [{ index: { _type: d.type } }, _.omit(d, ['type'])])
+      body: _.flatMap(documents, d => [{ index: { _id: d.num, _type: d.type } }, _.omit(d, ['type'])])
     });
   }
 }
@@ -90,7 +90,7 @@ function indexSprints(documents) {
 
 
 function story(title, size = 1) {
-  return { num: lastId++, title, size, type: 'story' };
+  return { num: '' + lastId++, title, size, type: 'story' };
 }
 
 function milestone(name) {

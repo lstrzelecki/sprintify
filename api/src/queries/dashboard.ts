@@ -6,10 +6,8 @@ import deadlines from './deadlines';
 import currentSprint from './sprint';
 
 export default {
-  dashboard: {
-    ...backlog,
-    ...milestones,
-    ...deadlines,
-    ...currentSprint
-  }
+  ...backlog,
+  ...milestones,
+  ...deadlines,
+  ...currentSprint
 };

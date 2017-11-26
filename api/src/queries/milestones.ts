@@ -5,7 +5,8 @@ export default {
   milestones: () => {
     return client.search({
       index: 'backlog',
-      type: 'milestone'
+      type: 'milestone',
+      size: 1000
     })
     .then(({ hits }) => hits)
     .then(({ hits }) => hits)

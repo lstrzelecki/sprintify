@@ -19,8 +19,8 @@ interface StoriesProps {
   edited?: State.StoryNumber;
   milestones: State.Marker[];
   storyClass?: (s: State.Story) => string;
-  onMoveBefore?: (story: number, relative: number) => void;
-  onMoveAfter?: (story: number, relative: number) => void;
+  onMoveBefore?: (story: State.StoryNumber, relative: State.StoryNumber) => void;
+  onMoveAfter?: (story: State.StoryNumber, relative: State.StoryNumber) => void;
 }
 
 const noop = () => ({});
@@ -46,7 +46,7 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
       </div>
   );
 
-  function renderMarkers(story: number) {
+  function renderMarkers(story: State.StoryNumber) {
     const markers = _.filter(matches({ after: story }), milestones);
     return _.flatMap(renderMarker, markers);
   }
@@ -95,7 +95,7 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
     const onDropAfter = (data: { story?: string, milestone?: string }) => {
       actions.dragInProgress(false);
       if (data.story) {
-        onMoveAfter(Number(data.story), story.num);
+        onMoveAfter(data.story, story.num);
       }
       if (data.milestone) {
         actions.moveMilestoneAfter(data.milestone, story.num);
@@ -104,7 +104,7 @@ function Stories({ stories, milestones, edited, storyClass = _.constant(''), onM
     const onDropBefore = (data: { story?: string }) => {
       actions.dragInProgress(false);
       if (data.story) {
-        onMoveBefore(Number(data.story), story.num);
+        onMoveBefore(data.story, story.num);
       }
     };
 

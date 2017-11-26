@@ -15,7 +15,7 @@ interface SprintAndBacklogProps {
 
 function SprintAndBacklog({ sprint, backlog, milestones, edited, actions }: SprintAndBacklogProps & Actions) {
 
-  const fromSprint = (num: number) => _.find({num}, sprint.stories) !== undefined;
+  const fromSprint = (num: State.StoryNumber) => _.find({num}, sprint.stories) !== undefined;
 
   return (
     <div className="s-backlog">

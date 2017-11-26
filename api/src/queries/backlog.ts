@@ -5,7 +5,8 @@ export default {
   backlog: () => {
     return client.search({
       index: 'backlog',
-      type: 'story'
+      type: 'story',
+      size: 1000
     })
     .then(({ hits }) => hits)
     .then(({ hits }) => hits)
